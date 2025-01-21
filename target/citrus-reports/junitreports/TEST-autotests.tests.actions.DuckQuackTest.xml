@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="autotests.tests.actions.DuckSwimTest" time="0.0" tests="2" errors="0" skipped="0" failures="2">
-    <testcase name="DuckSwimTest.duckWithoutIdSwimming" classname="autotests.tests.actions.DuckSwimTest" time="0.0">
-      <failure type="com.consol.citrus.exceptions.ValidationException" message="Validation failed: Values not equal for header element &apos;citrus_http_reason_phrase&apos;, expected &apos;OK&apos; but was &apos;NOT_FOUND&apos;">
+<testsuite name="autotests.tests.actions.DuckQuackTest" time="0.0" tests="2" errors="0" skipped="0" failures="2">
+    <testcase name="DuckQuackTest.successfulQuackEvenId" classname="autotests.tests.actions.DuckQuackTest" time="0.0">
+      <failure type="com.consol.citrus.exceptions.ValidationException" message="Failed to validate JSON text:
+{&quot;sound&quot;:&quot;moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo&quot;} Values not equal for entry: &apos;sound&apos;, expected &apos;quack-quack-quack-quack-quack, quack-quack-quack-quack-quack, quack-quack-quack-quack-quack&apos; but was &apos;moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo&apos;">
         <![CDATA[
-        com.consol.citrus.exceptions.ValidationException: Validation failed: Values not equal for header element 'citrus_http_reason_phrase', expected 'OK' but was 'NOT_FOUND'
-	at com.consol.citrus.validation.DefaultHeaderValidator.validateHeader(DefaultHeaderValidator.java:79)
-	at com.consol.citrus.validation.DefaultMessageHeaderValidator.validateMessage(DefaultMessageHeaderValidator.java:101)
-	at com.consol.citrus.validation.DefaultMessageHeaderValidator.validateMessage(DefaultMessageHeaderValidator.java:44)
+        com.consol.citrus.exceptions.ValidationException: Failed to validate JSON text:
+{"sound":"moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo"} Values not equal for entry: 'sound', expected 'quack-quack-quack-quack-quack, quack-quack-quack-quack-quack, quack-quack-quack-quack-quack' but was 'moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo'
+	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateMessage(JsonTextMessageValidator.java:114)
+	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateMessage(JsonTextMessageValidator.java:58)
 	at com.consol.citrus.validation.AbstractMessageValidator.validateMessage(AbstractMessageValidator.java:46)
 	at com.consol.citrus.actions.ReceiveMessageAction.validateMessage(ReceiveMessageAction.java:279)
 	at com.consol.citrus.actions.ReceiveMessageAction.doExecute(ReceiveMessageAction.java:168)
@@ -14,8 +15,8 @@
 	at com.consol.citrus.DefaultTestCase.executeAction(DefaultTestCase.java:136)
 	at com.consol.citrus.DefaultTestCaseRunner.run(DefaultTestCaseRunner.java:125)
 	at com.consol.citrus.TestActionRunner.$(TestActionRunner.java:35)
-	at autotests.tests.actions.DuckSwimTest.validateResponse(DuckSwimTest.java:57)
-	at autotests.tests.actions.DuckSwimTest.duckWithoutIdSwimming(DuckSwimTest.java:44)
+	at autotests.clients.ActionsClient.validateResponse(ActionsClient.java:71)
+	at autotests.tests.actions.DuckQuackTest.successfulQuackEvenId(DuckQuackTest.java:52)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -52,21 +53,23 @@
 	at org.testng.TestNG.run(TestNG.java:1067)
 	at com.intellij.rt.testng.IDEARemoteTestNG.run(IDEARemoteTestNG.java:65)
 	at com.intellij.rt.testng.RemoteTestNGStarter.main(RemoteTestNGStarter.java:105)
-Caused by: java.lang.IllegalArgumentException: Values not equal for header element 'citrus_http_reason_phrase', expected 'OK' but was 'NOT_FOUND'
+Caused by: java.lang.IllegalArgumentException: Values not equal for entry: 'sound', expected 'quack-quack-quack-quack-quack, quack-quack-quack-quack-quack, quack-quack-quack-quack-quack' but was 'moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo, moo-moo-moo'
 	at org.springframework.util.Assert.isTrue(Assert.java:121)
-	at com.consol.citrus.validation.DefaultHeaderValidator.validateHeader(DefaultHeaderValidator.java:66)
-	... 47 more
+	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateJson(JsonTextMessageValidator.java:211)
+	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateMessage(JsonTextMessageValidator.java:102)
+	... 46 more
 
         ]]>
       </failure>
     </testcase>
-    <testcase name="DuckSwimTest.successfulSwim" classname="autotests.tests.actions.DuckSwimTest" time="0.0">
-      <failure type="com.consol.citrus.exceptions.ValidationException" message="Validation failed: Values not equal for header element &apos;citrus_http_reason_phrase&apos;, expected &apos;OK&apos; but was &apos;NOT_FOUND&apos;">
+    <testcase name="DuckQuackTest.successfulQuackOddId" classname="autotests.tests.actions.DuckQuackTest" time="0.0">
+      <failure type="com.consol.citrus.exceptions.ValidationException" message="Failed to validate JSON text:
+{&quot;sound&quot;:&quot;quack-quack, quack-quack, quack-quack&quot;} Values not equal for entry: &apos;sound&apos;, expected &apos;quack-quack-quack, quack-quack-quack&apos; but was &apos;quack-quack, quack-quack, quack-quack&apos;">
         <![CDATA[
-        com.consol.citrus.exceptions.ValidationException: Validation failed: Values not equal for header element 'citrus_http_reason_phrase', expected 'OK' but was 'NOT_FOUND'
-	at com.consol.citrus.validation.DefaultHeaderValidator.validateHeader(DefaultHeaderValidator.java:79)
-	at com.consol.citrus.validation.DefaultMessageHeaderValidator.validateMessage(DefaultMessageHeaderValidator.java:101)
-	at com.consol.citrus.validation.DefaultMessageHeaderValidator.validateMessage(DefaultMessageHeaderValidator.java:44)
+        com.consol.citrus.exceptions.ValidationException: Failed to validate JSON text:
+{"sound":"quack-quack, quack-quack, quack-quack"} Values not equal for entry: 'sound', expected 'quack-quack-quack, quack-quack-quack' but was 'quack-quack, quack-quack, quack-quack'
+	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateMessage(JsonTextMessageValidator.java:114)
+	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateMessage(JsonTextMessageValidator.java:58)
 	at com.consol.citrus.validation.AbstractMessageValidator.validateMessage(AbstractMessageValidator.java:46)
 	at com.consol.citrus.actions.ReceiveMessageAction.validateMessage(ReceiveMessageAction.java:279)
 	at com.consol.citrus.actions.ReceiveMessageAction.doExecute(ReceiveMessageAction.java:168)
@@ -74,8 +77,8 @@ Caused by: java.lang.IllegalArgumentException: Values not equal for header eleme
 	at com.consol.citrus.DefaultTestCase.executeAction(DefaultTestCase.java:136)
 	at com.consol.citrus.DefaultTestCaseRunner.run(DefaultTestCaseRunner.java:125)
 	at com.consol.citrus.TestActionRunner.$(TestActionRunner.java:35)
-	at autotests.tests.actions.DuckSwimTest.validateResponse(DuckSwimTest.java:57)
-	at autotests.tests.actions.DuckSwimTest.successfulSwim(DuckSwimTest.java:33)
+	at autotests.clients.ActionsClient.validateResponse(ActionsClient.java:71)
+	at autotests.tests.actions.DuckQuackTest.successfulQuackOddId(DuckQuackTest.java:90)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -112,10 +115,11 @@ Caused by: java.lang.IllegalArgumentException: Values not equal for header eleme
 	at org.testng.TestNG.run(TestNG.java:1067)
 	at com.intellij.rt.testng.IDEARemoteTestNG.run(IDEARemoteTestNG.java:65)
 	at com.intellij.rt.testng.RemoteTestNGStarter.main(RemoteTestNGStarter.java:105)
-Caused by: java.lang.IllegalArgumentException: Values not equal for header element 'citrus_http_reason_phrase', expected 'OK' but was 'NOT_FOUND'
+Caused by: java.lang.IllegalArgumentException: Values not equal for entry: 'sound', expected 'quack-quack-quack, quack-quack-quack' but was 'quack-quack, quack-quack, quack-quack'
 	at org.springframework.util.Assert.isTrue(Assert.java:121)
-	at com.consol.citrus.validation.DefaultHeaderValidator.validateHeader(DefaultHeaderValidator.java:66)
-	... 47 more
+	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateJson(JsonTextMessageValidator.java:211)
+	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateMessage(JsonTextMessageValidator.java:102)
+	... 46 more
 
         ]]>
       </failure>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="autotests.actions.DuckSwimTest" time="0.0" tests="1" errors="0" skipped="0" failures="1">
-    <testcase name="DuckActionsTest.successfulSwim" classname="autotests.actions.DuckSwimTest" time="0.0">
+<testsuite name="autotests.tests.actions.DuckSwimTest" time="0.0" tests="1" errors="0" skipped="0" failures="1">
+    <testcase name="DuckActionsTest.successfulSwim" classname="autotests.tests.actions.DuckSwimTest" time="0.0">
       <failure type="com.consol.citrus.exceptions.ValidationException" message="Validation failed: Values not equal for header element &apos;citrus_http_reason_phrase&apos;, expected &apos;OK&apos; but was &apos;NOT_FOUND&apos;">
         <![CDATA[
         com.consol.citrus.exceptions.ValidationException: Validation failed: Values not equal for header element 'citrus_http_reason_phrase', expected 'OK' but was 'NOT_FOUND'
@@ -14,8 +14,8 @@
 	at com.consol.citrus.DefaultTestCase.executeAction(DefaultTestCase.java:136)
 	at com.consol.citrus.DefaultTestCaseRunner.run(DefaultTestCaseRunner.java:125)
 	at com.consol.citrus.TestActionRunner.$(TestActionRunner.java:35)
-	at autotests.actions.DuckSwimTest.validateResponse(DuckActionsTest.java:46)
-	at autotests.actions.DuckSwimTest.successfulSwim(DuckActionsTest.java:33)
+	at autotests.tests.actions.DuckSwimTest.validateResponse(DuckActionsTest.java:46)
+	at autotests.tests.actions.DuckSwimTest.successfulSwim(DuckActionsTest.java:33)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="autotests.actions.DuckPropertiesTest" time="0.0" tests="2" errors="0" skipped="0" failures="2">
-    <testcase name="DuckPropertiesTest.successfulPropertiesRubberDuck" classname="autotests.actions.DuckPropertiesTest" time="0.0">
+<testsuite name="autotests.tests.actions.DuckPropertiesTest" time="0.0" tests="2" errors="0" skipped="0" failures="2">
+    <testcase name="DuckPropertiesTest.successfulPropertiesRubberDuck" classname="autotests.tests.actions.DuckPropertiesTest" time="0.0">
       <failure type="com.consol.citrus.exceptions.ValidationException" message="Failed to validate JSON text:
 {&quot;color&quot;:&quot;black&quot;,&quot;height&quot;:150.0,&quot;material&quot;:&quot;rubber&quot;,&quot;sound&quot;:&quot;quack&quot;,&quot;wingsState&quot;:&quot;FIXED&quot;} Values not equal for entry: &apos;height&apos;, expected &apos;1.5&apos; but was &apos;150.0&apos;">
         <![CDATA[
@@ -15,8 +15,8 @@
 	at com.consol.citrus.DefaultTestCase.executeAction(DefaultTestCase.java:136)
 	at com.consol.citrus.DefaultTestCaseRunner.run(DefaultTestCaseRunner.java:125)
 	at com.consol.citrus.TestActionRunner.$(TestActionRunner.java:35)
-	at autotests.actions.DuckPropertiesTest.validateResponse(DuckPropertiesTest.java:88)
-	at autotests.actions.DuckPropertiesTest.successfulPropertiesRubberDuck(DuckPropertiesTest.java:69)
+	at autotests.tests.actions.DuckPropertiesTest.validateResponse(DuckPropertiesTest.java:88)
+	at autotests.tests.actions.DuckPropertiesTest.successfulPropertiesRubberDuck(DuckPropertiesTest.java:69)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -62,7 +62,7 @@ Caused by: java.lang.IllegalArgumentException: Values not equal for entry: 'heig
         ]]>
       </failure>
     </testcase>
-    <testcase name="DuckPropertiesTest.successfulPropertiesWoodDuck" classname="autotests.actions.DuckPropertiesTest" time="0.0">
+    <testcase name="DuckPropertiesTest.successfulPropertiesWoodDuck" classname="autotests.tests.actions.DuckPropertiesTest" time="0.0">
       <failure type="com.consol.citrus.exceptions.ValidationException" message="Failed to validate JSON text:
 {} Number of JSON entries not equal for element: &apos;$.&apos;, expected &apos;5&apos; but was &apos;0&apos;">
         <![CDATA[
@@ -77,8 +77,8 @@ Caused by: java.lang.IllegalArgumentException: Values not equal for entry: 'heig
 	at com.consol.citrus.DefaultTestCase.executeAction(DefaultTestCase.java:136)
 	at com.consol.citrus.DefaultTestCaseRunner.run(DefaultTestCaseRunner.java:125)
 	at com.consol.citrus.TestActionRunner.$(TestActionRunner.java:35)
-	at autotests.actions.DuckPropertiesTest.validateResponse(DuckPropertiesTest.java:88)
-	at autotests.actions.DuckPropertiesTest.successfulPropertiesWoodDuck(DuckPropertiesTest.java:43)
+	at autotests.tests.actions.DuckPropertiesTest.validateResponse(DuckPropertiesTest.java:88)
+	at autotests.tests.actions.DuckPropertiesTest.successfulPropertiesWoodDuck(DuckPropertiesTest.java:43)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
