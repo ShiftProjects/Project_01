@@ -40,6 +40,38 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                         + "\"\n" + "}"));
     }
 
+    //Создание утки с чётным ID
+    public long createDuckEvenId(TestCaseRunner runner,
+                                 String color,
+                                 double height,
+                                 String material,
+                                 String sound,
+                                 String wingsState) {
+        long id;
+        do {
+            createDuck(runner, color, height, material, sound, wingsState);
+            id = getIntegerDuckId(runner);
+        }
+        while (id % 2 != 0);
+        return id;
+    }
+
+    //Создание утки с нечётным ID
+    public long createDuckOddId(TestCaseRunner runner,
+                                String color,
+                                double height,
+                                String material,
+                                String sound,
+                                String wingsState) {
+        long id;
+        do {
+            createDuck(runner, color, height, material, sound, wingsState);
+            id = getIntegerDuckId(runner);
+        }
+        while (id % 2 == 0);
+        return id;
+    }
+
     //Получение тестовой переменной ID уточки
     public String getDuckId(TestCaseRunner runner) {
         runner.$(http().client(duckService)

@@ -2,10 +2,10 @@
 <testsuite name="autotests.tests.actions.DuckPropertiesTest" time="0.0" tests="2" errors="0" skipped="0" failures="2">
     <testcase name="DuckPropertiesTest.successfulPropertiesRubberDuck" classname="autotests.tests.actions.DuckPropertiesTest" time="0.0">
       <failure type="com.consol.citrus.exceptions.ValidationException" message="Failed to validate JSON text:
-{&quot;color&quot;:&quot;black&quot;,&quot;height&quot;:150.0,&quot;material&quot;:&quot;rubber&quot;,&quot;sound&quot;:&quot;quack&quot;,&quot;wingsState&quot;:&quot;FIXED&quot;} Values not equal for entry: &apos;height&apos;, expected &apos;1.5&apos; but was &apos;150.0&apos;">
+{&quot;color&quot;:&quot;odd&quot;,&quot;height&quot;:150.0,&quot;material&quot;:&quot;rubber&quot;,&quot;sound&quot;:&quot;quack&quot;,&quot;wingsState&quot;:&quot;FIXED&quot;} Values not equal for entry: &apos;height&apos;, expected &apos;1.5&apos; but was &apos;150.0&apos;">
         <![CDATA[
         com.consol.citrus.exceptions.ValidationException: Failed to validate JSON text:
-{"color":"black","height":150.0,"material":"rubber","sound":"quack","wingsState":"FIXED"} Values not equal for entry: 'height', expected '1.5' but was '150.0'
+{"color":"odd","height":150.0,"material":"rubber","sound":"quack","wingsState":"FIXED"} Values not equal for entry: 'height', expected '1.5' but was '150.0'
 	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateMessage(JsonTextMessageValidator.java:114)
 	at com.consol.citrus.validation.json.JsonTextMessageValidator.validateMessage(JsonTextMessageValidator.java:58)
 	at com.consol.citrus.validation.AbstractMessageValidator.validateMessage(AbstractMessageValidator.java:46)
@@ -15,8 +15,8 @@
 	at com.consol.citrus.DefaultTestCase.executeAction(DefaultTestCase.java:136)
 	at com.consol.citrus.DefaultTestCaseRunner.run(DefaultTestCaseRunner.java:125)
 	at com.consol.citrus.TestActionRunner.$(TestActionRunner.java:35)
-	at autotests.clients.ActionsClient.validateResponse(ActionsClient.java:65)
-	at autotests.tests.actions.DuckPropertiesTest.successfulPropertiesRubberDuck(DuckPropertiesTest.java:81)
+	at autotests.clients.ActionsClient.validateResponse(ActionsClient.java:97)
+	at autotests.tests.actions.DuckPropertiesTest.successfulPropertiesRubberDuck(DuckPropertiesTest.java:66)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -77,8 +77,8 @@ Caused by: java.lang.IllegalArgumentException: Values not equal for entry: 'heig
 	at com.consol.citrus.DefaultTestCase.executeAction(DefaultTestCase.java:136)
 	at com.consol.citrus.DefaultTestCaseRunner.run(DefaultTestCaseRunner.java:125)
 	at com.consol.citrus.TestActionRunner.$(TestActionRunner.java:35)
-	at autotests.clients.ActionsClient.validateResponse(ActionsClient.java:65)
-	at autotests.tests.actions.DuckPropertiesTest.successfulPropertiesWoodDuck(DuckPropertiesTest.java:53)
+	at autotests.clients.ActionsClient.validateResponse(ActionsClient.java:97)
+	at autotests.tests.actions.DuckPropertiesTest.successfulPropertiesWoodDuck(DuckPropertiesTest.java:41)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

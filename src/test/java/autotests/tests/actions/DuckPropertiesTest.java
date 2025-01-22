@@ -21,7 +21,7 @@ public class DuckPropertiesTest extends ActionsClient {
     public void successfulPropertiesWoodDuck(@Optional @CitrusResource TestCaseRunner runner) {
         TestDuck testDuck = new TestDuck();
         testDuck.material = "wood";
-        long idDuck;
+        testDuck.color = "even";
 
         String responseMessage = "{\n" + "  \"color\": \"" + testDuck.color + "\",\n"
                 + "  \"height\": " + testDuck.height + ",\n"
@@ -30,17 +30,12 @@ public class DuckPropertiesTest extends ActionsClient {
                 + "  \"wingsState\": \"" + testDuck.wingsState
                 + "\"\n" + "}";
 
-        //Гарантированное создание утки с чётным ID
-        do {
-            createDuck(runner,
-                    testDuck.color,
-                    testDuck.height,
-                    testDuck.material,
-                    testDuck.sound,
-                    testDuck.wingsState);
-            idDuck = getIntegerDuckId(runner);
-        }
-        while (idDuck % 2 != 0);
+        long idDuck = createDuckEvenId(runner,
+                testDuck.color,
+                testDuck.height,
+                testDuck.material,
+                testDuck.sound,
+                testDuck.wingsState);
 
         duckProperties(runner, idDuck);
         validateResponse(runner, responseMessage);
@@ -51,7 +46,7 @@ public class DuckPropertiesTest extends ActionsClient {
     public void successfulPropertiesRubberDuck(@Optional @CitrusResource TestCaseRunner runner) {
         TestDuck testDuck = new TestDuck();
         testDuck.material = "rubber";
-        long idDuck;
+        testDuck.color = "odd";
 
         String responseMessage = "{\n" + "  \"color\": \"" + testDuck.color + "\",\n"
                 + "  \"height\": " + testDuck.height + ",\n"
@@ -60,17 +55,13 @@ public class DuckPropertiesTest extends ActionsClient {
                 + "  \"wingsState\": \"" + testDuck.wingsState
                 + "\"\n" + "}";
 
-        //Гарантированное создание утки с нечётным ID
-        do {
-            createDuck(runner,
-                    testDuck.color,
-                    testDuck.height,
-                    testDuck.material,
-                    testDuck.sound,
-                    testDuck.wingsState);
-            idDuck = getIntegerDuckId(runner);
-        }
-        while (idDuck % 2 == 0);
+        long idDuck = createDuckOddId(runner,
+                testDuck.color,
+                testDuck.height,
+                testDuck.material,
+                testDuck.sound,
+                testDuck.wingsState);
+
         duckProperties(runner, idDuck);
         validateResponse(runner, responseMessage);
     }
