@@ -1,0 +1,7 @@
+Строка запуска сервиса: java -jar ./artifacts/duck-service-1.0.2.jar
+
+URL: http://localhost:2222
+Swagger: http://localhost:2222/swagger-ui.html
+Консоль для работы с базой данных: http://localhost:2222/h2-console
+User name: dev
+Password: dev
