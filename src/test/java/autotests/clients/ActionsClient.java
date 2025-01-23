@@ -117,41 +117,41 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
 
 
     //Показать характеристики
-    public void duckProperties(TestCaseRunner runner, long id) {
+    public void duckProperties(TestCaseRunner runner, String id) {
         runner.$(http().client(duckService)
                 .send()
                 .get("/api/duck/action/properties")
-                .queryParam("id", String.valueOf(id)));
+                .queryParam("id", id));
     }
 
     //крякай, уточка!
     public void duckQuack(TestCaseRunner runner,
-                          long id,
+                          String id,
                           int repetitionCount,
                           int soundCount) {
         runner.$(http().client(duckService)
                 .send()
                 .get("/api/duck/action/quack")
-                .queryParam("id", String.valueOf(id))
+                .queryParam("id", id)
                 .queryParam("repetitionCount", String.valueOf(repetitionCount))
                 .queryParam("soundCount", String.valueOf(soundCount)))
         ;
     }
 
     //плыви, уточка!
-    public void duckSwim(TestCaseRunner runner, long id) {
+    public void duckSwim(TestCaseRunner runner, String id) {
         runner.$(http().client(duckService)
                 .send()
                 .get("/api/duck/action/swim")
-                .queryParam("id", String.valueOf(id)));
+                .queryParam("id", id));
     }
 
     //лети, уточка!
-    public void duckFly(TestCaseRunner runner, long id) {
+    public void duckFly(TestCaseRunner runner, String id) {
         runner.$(http().client(duckService)
                 .send()
                 .get("/api/duck/action/fly")
-                .queryParam("id", String.valueOf(id)));
+                .queryParam("id", id));
     }
 
 }

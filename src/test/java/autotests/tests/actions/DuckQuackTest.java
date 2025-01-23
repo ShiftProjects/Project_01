@@ -14,7 +14,7 @@ public class DuckQuackTest extends ActionsClient {
     @CitrusTest
     public void successfulQuackEvenId(@Optional @CitrusResource TestCaseRunner runner) {
         int repetitionCount = 3; // количество повторов серий
-        int soundCount = 5; // количество кваков в серии
+        int soundCount = 5; // количество кряков в серии
         String sound = "quack";
 
         String quackSound = getQuackSound(repetitionCount, soundCount, sound);
@@ -22,7 +22,7 @@ public class DuckQuackTest extends ActionsClient {
 
         createDuckEvenId(runner, "even", 2.21, "rubber", "quack", "ACTIVE");
         duckQuack(runner,
-                getIntegerDuckId(runner, "${duckId}"),
+                "${duckId}",
                 repetitionCount,
                 soundCount);
         validateResponse(runner, responseMessage);
@@ -40,7 +40,7 @@ public class DuckQuackTest extends ActionsClient {
 
         createDuckOddId(runner, "odd", 2.21, "rubber", "quack", "ACTIVE");
         duckQuack(runner,
-                getIntegerDuckId(runner, "${duckId}"),
+                "${duckId}",
                 repetitionCount,
                 soundCount);
         validateResponse(runner, responseMessage);

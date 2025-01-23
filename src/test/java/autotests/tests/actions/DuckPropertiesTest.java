@@ -21,7 +21,7 @@ public class DuckPropertiesTest extends ActionsClient {
                 + "\"\n" + "}";
 
         createDuckEvenId(runner, "even", 2.21, "wood", "quack", "FIXED");
-        duckProperties(runner, getIntegerDuckId(runner, "${duckId}"));
+        duckProperties(runner, "${duckId}");
         validateResponse(runner, responseMessage);
     }
 
@@ -37,7 +37,7 @@ public class DuckPropertiesTest extends ActionsClient {
                 + "\"\n" + "}";
 
         createDuckOddId(runner, "odd", 2.21, "rubber", "quack", "FIXED");
-        duckProperties(runner, getIntegerDuckId(runner, "${duckId}"));
+        duckProperties(runner, "${duckId}");
         validateResponse(runner, responseMessage);
     }
 

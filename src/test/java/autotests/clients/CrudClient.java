@@ -70,7 +70,7 @@ public class CrudClient extends TestNGCitrusSpringSupport {
 
     //запрос на изменение уточки
     public void duckUpdate(TestCaseRunner runner,
-                           long id,
+                           String id,
                            String color,
                            double height,
                            String material,
@@ -81,18 +81,18 @@ public class CrudClient extends TestNGCitrusSpringSupport {
                 .put("/api/duck/update")
                 .queryParam("color", color)
                 .queryParam("height", String.valueOf(height))
-                .queryParam("id", String.valueOf(id))
+                .queryParam("id", id)
                 .queryParam("material", material)
                 .queryParam("sound", sound)
                 .queryParam("wingsState", wingsState));
     }
 
     //запрос на удаление уточки
-    public void duckDelete(TestCaseRunner runner, long id) {
+    public void duckDelete(TestCaseRunner runner, String id) {
         runner.$(http().client(duckService)
                 .send()
                 .delete("/api/duck/delete")
-                .queryParam("id", String.valueOf(id)));
+                .queryParam("id", id));
     }
 
 

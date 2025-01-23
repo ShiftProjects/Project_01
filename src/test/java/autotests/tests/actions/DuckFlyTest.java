@@ -13,33 +13,33 @@ public class DuckFlyTest extends ActionsClient {
     @Test(description = "Проверка того, что уточка полетела")
     @CitrusTest
     public void successfulFly(@Optional @CitrusResource TestCaseRunner runner) {
-        String responseMessage = "{\n" + "  \"message\": \"I am flying :)\"\n" + "}";
+        String responseMessage = "{\n" + "  \"message\": \"I'm flying\"\n" + "}";
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
         getDuckId(runner);
-        duckFly(runner, getIntegerDuckId(runner, "${duckId}"));
+        duckFly(runner, "${duckId}");
         validateResponse(runner, responseMessage);
     }
 
     @Test(description = "Проверка того, что уточка не может лететь со связанными крыльями")
     @CitrusTest
     public void successfulNotFly(@Optional @CitrusResource TestCaseRunner runner) {
-        String responseMessage = "{\n" + "  \"message\": \"I can not fly :C\"\n" + "}";
+        String responseMessage = "{\n" + "  \"message\": \"I can't fly\"\n" + "}";
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "FIXED");
         getDuckId(runner);
-        duckFly(runner, getIntegerDuckId(runner, "${duckId}"));
+        duckFly(runner, "${duckId}");
         validateResponse(runner, responseMessage);
     }
 
     @Test(description = "Проверка ответа на запрос Лететь уточке с крыльями в неопределенном состоянии")
     @CitrusTest
     public void successfulUndefinedStateOfWings(@Optional @CitrusResource TestCaseRunner runner) {
-        String responseMessage = "{\n" + "  \"message\": \"Wings are not detected :(\"\n" + "}";
+        String responseMessage = "{\n" + "  \"message\": \"Wings are not detected\"\n" + "}";
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "UNDEFINED");
         getDuckId(runner);
-        duckFly(runner, getIntegerDuckId(runner, "${duckId}"));
+        duckFly(runner, "${duckId}");
         validateResponse(runner, responseMessage);
     }
 

@@ -19,7 +19,7 @@ public class DuckSwimTest extends ActionsClient {
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
         getDuckId(runner);
-        duckSwim(runner, getIntegerDuckId(runner, "${duckId}"));
+        duckSwim(runner, "${duckId}");
         validateResponse(runner, responseMessage);
     }
 
@@ -31,7 +31,7 @@ public class DuckSwimTest extends ActionsClient {
         long idDuck = getIntegerDuckId(runner, "${duckId}") + 1;
         String responseMessage = "{\n"
                 + "  \"message\": \"duck with id=" + idDuck + " is not found\"\n" + "}";
-        duckSwim(runner, idDuck);
+        duckSwim(runner, String.valueOf(idDuck));
         validateResponse(runner, responseMessage);
     }
 
