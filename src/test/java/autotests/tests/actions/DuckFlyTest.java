@@ -8,28 +8,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
 public class DuckFlyTest extends ActionsClient {
-    private static class TestDuck {
-        String color = "yellow";
-        double height = 2.21;
-        String material = "rubber";
-        String sound = "quack";
-        String wingsState = "FIXED";
-    }
+
 
     @Test(description = "Проверка того, что уточка полетела")
     @CitrusTest
     public void successfulFly(@Optional @CitrusResource TestCaseRunner runner) {
         String responseMessage = "{\n" + "  \"message\": \"I am flying :)\"\n" + "}";
-        TestDuck testDuck = new TestDuck();
-        testDuck.wingsState = "ACTIVE";
         long idDuck;
 
-        createDuck(runner,
-                testDuck.color,
-                testDuck.height,
-                testDuck.material,
-                testDuck.sound,
-                testDuck.wingsState);
+        createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
         idDuck = getIntegerDuckId(runner);
         duckFly(runner, idDuck);
         validateResponse(runner, responseMessage);
@@ -39,16 +26,9 @@ public class DuckFlyTest extends ActionsClient {
     @CitrusTest
     public void successfulNotFly(@Optional @CitrusResource TestCaseRunner runner) {
         String responseMessage = "{\n" + "  \"message\": \"I can not fly :C\"\n" + "}";
-        TestDuck testDuck = new TestDuck();
-        testDuck.wingsState = "FIXED";
         long idDuck;
 
-        createDuck(runner,
-                testDuck.color,
-                testDuck.height,
-                testDuck.material,
-                testDuck.sound,
-                testDuck.wingsState);
+        createDuck(runner, "yellow", 2.21, "rubber", "quack", "FIXED");
         idDuck = getIntegerDuckId(runner);
         duckFly(runner, idDuck);
         validateResponse(runner, responseMessage);
@@ -58,16 +38,9 @@ public class DuckFlyTest extends ActionsClient {
     @CitrusTest
     public void successfulUndefinedStateOfWings(@Optional @CitrusResource TestCaseRunner runner) {
         String responseMessage = "{\n" + "  \"message\": \"Wings are not detected :(\"\n" + "}";
-        TestDuck testDuck = new TestDuck();
-        testDuck.wingsState = "UNDEFINED";
         long idDuck;
 
-        createDuck(runner,
-                testDuck.color,
-                testDuck.height,
-                testDuck.material,
-                testDuck.sound,
-                testDuck.wingsState);
+        createDuck(runner, "yellow", 2.21, "rubber", "quack", "UNDEFINED");
         idDuck = getIntegerDuckId(runner);
         duckFly(runner, idDuck);
         validateResponse(runner, responseMessage);

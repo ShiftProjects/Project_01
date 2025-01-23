@@ -10,57 +10,36 @@ import org.testng.annotations.Test;
 
 public class DuckCreateTest extends CrudClient {
 
-    private static class TestDuck {
-        String color = "yellow";
-        double height = 0.3;
-        String material = "rubber";
-        String sound = "quack";
-        String wingsState = "FIXED";
-    }
 
     @Test(description = "Проверка создания утки с material = rubber")
     @CitrusTest
     public void successfulCreationRubberDuck(@Optional @CitrusResource TestCaseRunner runner) {
-        TestDuck testDuck = new TestDuck();
-        testDuck.material = "rubber";
         String responseMessage = "{\n"
                 + "  \"id\": \"@ignore@\"" + ",\n"
-                + "  \"color\": \"" + testDuck.color + "\",\n"
-                + "  \"height\": " + testDuck.height + ",\n"
-                + "  \"material\": \"" + testDuck.material + "\",\n"
-                + "  \"sound\": \"" + testDuck.sound + "\",\n"
-                + "  \"wingsState\": \"" + testDuck.wingsState
+                + "  \"color\": \"" + "yellow" + "\",\n"
+                + "  \"height\": " + 2.21 + ",\n"
+                + "  \"material\": \"" + "rubber" + "\",\n"
+                + "  \"sound\": \"" + "quack" + "\",\n"
+                + "  \"wingsState\": \"" + "ACTIVE"
                 + "\"\n" + "}";
 
-        createDuck(runner,
-                testDuck.color,
-                testDuck.height,
-                testDuck.material,
-                testDuck.sound,
-                testDuck.wingsState);
+        createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
         validateResponse(runner, responseMessage);
     }
 
     @Test(description = "Проверка создания утки с material = wood")
     @CitrusTest
     public void successfulCreationWoodDuck(@Optional @CitrusResource TestCaseRunner runner) {
-        TestDuck testDuck = new TestDuck();
-        testDuck.material = "wood";
         String responseMessage = "{\n"
                 + "  \"id\": \"@ignore@\"" + ",\n"
-                + "  \"color\": \"" + testDuck.color + "\",\n"
-                + "  \"height\": " + testDuck.height + ",\n"
-                + "  \"material\": \"" + testDuck.material + "\",\n"
-                + "  \"sound\": \"" + testDuck.sound + "\",\n"
-                + "  \"wingsState\": \"" + testDuck.wingsState
+                + "  \"color\": \"" + "yellow" + "\",\n"
+                + "  \"height\": " + 2.21 + ",\n"
+                + "  \"material\": \"" + "wood" + "\",\n"
+                + "  \"sound\": \"" + "quack" + "\",\n"
+                + "  \"wingsState\": \"" + "ACTIVE"
                 + "\"\n" + "}";
 
-        createDuck(runner,
-                testDuck.color,
-                testDuck.height,
-                testDuck.material,
-                testDuck.sound,
-                testDuck.wingsState);
+        createDuck(runner, "yellow", 2.21, "wood", "quack", "ACTIVE");
         validateResponse(runner, responseMessage);
     }
 
