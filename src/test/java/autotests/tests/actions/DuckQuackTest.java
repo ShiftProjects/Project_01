@@ -20,10 +20,9 @@ public class DuckQuackTest extends ActionsClient {
         String quackSound = getQuackSound(repetitionCount, soundCount, sound);
         String responseMessage = "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}";
 
-        long idDuck = createDuckEvenId(runner, "even", 2.21, "rubber", "quack", "ACTIVE");
-
+        createDuckEvenId(runner, "even", 2.21, "rubber", "quack", "ACTIVE");
         duckQuack(runner,
-                idDuck,
+                getIntegerDuckId(runner, "${duckId}"),
                 repetitionCount,
                 soundCount);
         validateResponse(runner, responseMessage);
@@ -39,10 +38,9 @@ public class DuckQuackTest extends ActionsClient {
         String quackSound = getQuackSound(repetitionCount, soundCount, sound);
         String responseMessage = "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}";
 
-        long idDuck = createDuckOddId(runner, "odd", 2.21, "rubber", "quack", "ACTIVE");
-
+        createDuckOddId(runner, "odd", 2.21, "rubber", "quack", "ACTIVE");
         duckQuack(runner,
-                idDuck,
+                getIntegerDuckId(runner, "${duckId}"),
                 repetitionCount,
                 soundCount);
         validateResponse(runner, responseMessage);

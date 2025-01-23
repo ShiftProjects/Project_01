@@ -41,7 +41,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //Создание утки с чётным ID
-    public long createDuckEvenId(TestCaseRunner runner,
+    public void createDuckEvenId(TestCaseRunner runner,
                                  String color,
                                  double height,
                                  String material,
@@ -50,14 +50,14 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
         long id;
         do {
             createDuck(runner, color, height, material, sound, wingsState);
-            id = getIntegerDuckId(runner);
+            getDuckId(runner);
+            id = getIntegerDuckId(runner, "${duckId}");
         }
         while (id % 2 != 0);
-        return id;
     }
 
     //Создание утки с нечётным ID
-    public long createDuckOddId(TestCaseRunner runner,
+    public void createDuckOddId(TestCaseRunner runner,
                                 String color,
                                 double height,
                                 String material,
@@ -66,28 +66,26 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
         long id;
         do {
             createDuck(runner, color, height, material, sound, wingsState);
-            id = getIntegerDuckId(runner);
+            getDuckId(runner);
+            id = getIntegerDuckId(runner, "${duckId}");
         }
         while (id % 2 == 0);
-        return id;
     }
 
     //Получение тестовой переменной ID уточки
-    public String getDuckId(TestCaseRunner runner) {
+    public void getDuckId(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .receive()
                 .response(HttpStatus.OK)
                 .message()
                 .extract(fromBody().expression("$.id", "duckId")));
-        return "${duckId}";
     }
 
-    //Получение id уточки типа long
-    public long getIntegerDuckId(TestCaseRunner runner) {
+    //Преобразование контекстной переменной "idContext" в тип long
+    public long getIntegerDuckId(TestCaseRunner runner, String idContext) {
         AtomicInteger id = new AtomicInteger();
-        getDuckId(runner);
         runner.$(action -> {
-            id.set(Integer.parseInt(action.getVariable("duckId")));
+            id.set(Integer.parseInt(action.getVariable(idContext)));
         });
         return id.longValue();
     }

@@ -11,14 +11,15 @@ import org.testng.annotations.Test;
 public class DuckDeleteTest extends CrudClient {
 
 
+
     @Test(description = "Проверка удаления уточки")
     @CitrusTest
     public void successfulDuckDelete(@Optional @CitrusResource TestCaseRunner runner) {
         String responseMessage = "{\n" + "  \"message\": \"Duck is deleted\"\n" + "}";
 
         createDuck(runner, "yellow", 2.21, "wood", "quack", "ACTIVE");
-        long idDuck = getIntegerDuckId(runner);
-        duckDelete(runner, idDuck);
+        getDuckId(runner);
+        duckDelete(runner, getIntegerDuckId(runner, "${duckId}"));
         validateResponse(runner, responseMessage);
     }
 

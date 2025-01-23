@@ -14,11 +14,10 @@ public class DuckFlyTest extends ActionsClient {
     @CitrusTest
     public void successfulFly(@Optional @CitrusResource TestCaseRunner runner) {
         String responseMessage = "{\n" + "  \"message\": \"I am flying :)\"\n" + "}";
-        long idDuck;
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
-        idDuck = getIntegerDuckId(runner);
-        duckFly(runner, idDuck);
+        getDuckId(runner);
+        duckFly(runner, getIntegerDuckId(runner, "${duckId}"));
         validateResponse(runner, responseMessage);
     }
 
@@ -26,11 +25,10 @@ public class DuckFlyTest extends ActionsClient {
     @CitrusTest
     public void successfulNotFly(@Optional @CitrusResource TestCaseRunner runner) {
         String responseMessage = "{\n" + "  \"message\": \"I can not fly :C\"\n" + "}";
-        long idDuck;
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "FIXED");
-        idDuck = getIntegerDuckId(runner);
-        duckFly(runner, idDuck);
+        getDuckId(runner);
+        duckFly(runner, getIntegerDuckId(runner, "${duckId}"));
         validateResponse(runner, responseMessage);
     }
 
@@ -38,11 +36,10 @@ public class DuckFlyTest extends ActionsClient {
     @CitrusTest
     public void successfulUndefinedStateOfWings(@Optional @CitrusResource TestCaseRunner runner) {
         String responseMessage = "{\n" + "  \"message\": \"Wings are not detected :(\"\n" + "}";
-        long idDuck;
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "UNDEFINED");
-        idDuck = getIntegerDuckId(runner);
-        duckFly(runner, idDuck);
+        getDuckId(runner);
+        duckFly(runner, getIntegerDuckId(runner, "${duckId}"));
         validateResponse(runner, responseMessage);
     }
 

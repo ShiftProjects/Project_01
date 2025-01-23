@@ -18,18 +18,17 @@ public class DuckSwimTest extends ActionsClient {
         long idDuck;
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
-        idDuck = getIntegerDuckId(runner);
-        duckSwim(runner, idDuck);
+        getDuckId(runner);
+        duckSwim(runner, getIntegerDuckId(runner, "${duckId}"));
         validateResponse(runner, responseMessage);
     }
 
     @Test(description = "Проверка ответа на запрос Плыть уточке с несуществующим ID")
     @CitrusTest
     public void duckWithoutIdSwimming(@Optional @CitrusResource TestCaseRunner runner) {
-        long idDuck;
-
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
-        idDuck = getIntegerDuckId(runner) + 1;
+        getDuckId(runner);
+        long idDuck = getIntegerDuckId(runner, "${duckId}") + 1;
         String responseMessage = "{\n"
                 + "  \"message\": \"duck with id=" + idDuck + " is not found\"\n" + "}";
         duckSwim(runner, idDuck);

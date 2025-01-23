@@ -20,9 +20,8 @@ public class DuckPropertiesTest extends ActionsClient {
                 + "  \"wingsState\": \"" + "FIXED"
                 + "\"\n" + "}";
 
-        long idDuck = createDuckEvenId(runner, "even", 2.21, "wood", "quack", "FIXED");
-
-        duckProperties(runner, idDuck);
+        createDuckEvenId(runner, "even", 2.21, "wood", "quack", "FIXED");
+        duckProperties(runner, getIntegerDuckId(runner, "${duckId}"));
         validateResponse(runner, responseMessage);
     }
 
@@ -37,9 +36,8 @@ public class DuckPropertiesTest extends ActionsClient {
                 + "  \"wingsState\": \"" + "FIXED"
                 + "\"\n" + "}";
 
-        long idDuck = createDuckOddId(runner, "odd", 2.21, "rubber", "quack", "FIXED");
-
-        duckProperties(runner, idDuck);
+        createDuckOddId(runner, "odd", 2.21, "rubber", "quack", "FIXED");
+        duckProperties(runner, getIntegerDuckId(runner, "${duckId}"));
         validateResponse(runner, responseMessage);
     }
 

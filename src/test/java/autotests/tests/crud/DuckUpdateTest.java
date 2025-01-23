@@ -16,7 +16,8 @@ public class DuckUpdateTest extends CrudClient {
     public void successfulUpdateOfColorAndHeight(@Optional @CitrusResource TestCaseRunner runner) {
 
         createDuck(runner, "yellow", 2.21, "wood", "quack", "ACTIVE");
-        long idDuck = getIntegerDuckId(runner);
+        getDuckId(runner);
+        long idDuck = getIntegerDuckId(runner, "${duckId}");
 
         String responseMessage = "{\n"
                 + "  \"message\": \"Duck with id = " + idDuck + " is updated\"\n" + "}";
@@ -29,7 +30,8 @@ public class DuckUpdateTest extends CrudClient {
     @CitrusTest
     public void successfulUpdateOfColorAndSound(@Optional @CitrusResource TestCaseRunner runner) {
         createDuck(runner, "yellow", 2.21, "wood", "quack", "ACTIVE");
-        long idDuck = getIntegerDuckId(runner);
+        getDuckId(runner);
+        long idDuck = getIntegerDuckId(runner, "${duckId}");
 
         String responseMessage = "{\n"
                 + "  \"message\": \"Duck with id = " + idDuck + " is updated\"\n" + "}";

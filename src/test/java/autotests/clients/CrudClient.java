@@ -42,21 +42,19 @@ public class CrudClient extends TestNGCitrusSpringSupport {
     }
 
     //Получение тестовой переменной ID уточки
-    public String getDuckId(TestCaseRunner runner) {
+    public void getDuckId(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .receive()
                 .response(HttpStatus.OK)
                 .message()
                 .extract(fromBody().expression("$.id", "duckId")));
-        return "${duckId}";
     }
 
-    //Получение id уточки типа long
-    public long getIntegerDuckId(TestCaseRunner runner) {
+    //Преобразование контекстной переменной "idContext" в тип long
+    public long getIntegerDuckId(TestCaseRunner runner, String idContext) {
         AtomicInteger id = new AtomicInteger();
-        getDuckId(runner);
         runner.$(action -> {
-            id.set(Integer.parseInt(action.getVariable("duckId")));
+            id.set(Integer.parseInt(action.getVariable(idContext)));
         });
         return id.longValue();
     }
@@ -96,8 +94,6 @@ public class CrudClient extends TestNGCitrusSpringSupport {
                 .delete("/api/duck/delete")
                 .queryParam("id", String.valueOf(id)));
     }
-
-
 
 
 }
