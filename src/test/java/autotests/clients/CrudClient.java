@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
@@ -94,5 +95,22 @@ public class CrudClient extends TestNGCitrusSpringSupport {
                 .queryParam("id", "${duckId}"));
     }
 
+    //запрос на получение списка ID всех уточек
+    public void getAllIds(TestCaseRunner runner) {
+        runner.$(http().client(duckService)
+                .send()
+                .get("/api/duck/getAllIds"));
+    }
+
+    //Формирование строки-массива из "${duckId}" элементов
+    public String arrayString(TestCaseRunner runner) {
+        StringBuilder arrString = new StringBuilder("[1");
+        long idDuck = getIntegerDuckId(runner);
+        for (long i = 2; i <= idDuck; i++) {
+            arrString.append(",").append(i);
+        }
+        arrString.append("]");
+        return arrString.toString();
+    }
 
 }

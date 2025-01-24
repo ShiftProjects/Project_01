@@ -99,7 +99,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                                 String sound) {
         StringBuilder quackRepetition = new StringBuilder(sound);
         for (int i = 1; i < soundCount; i++) {
-            quackRepetition.append("-" + sound);
+            quackRepetition.append("-").append(sound);
         }
         StringBuilder quackSound = new StringBuilder(quackRepetition);
         for (int i = 1; i < repetitionCount; i++) {
