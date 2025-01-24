@@ -17,7 +17,7 @@ public class DuckFlyTest extends ActionsClient {
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
         getDuckId(runner);
-        duckFly(runner, "${duckId}");
+        duckFly(runner);
         validateResponse(runner, responseMessage);
     }
 
@@ -28,7 +28,7 @@ public class DuckFlyTest extends ActionsClient {
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "FIXED");
         getDuckId(runner);
-        duckFly(runner, "${duckId}");
+        duckFly(runner);
         validateResponse(runner, responseMessage);
     }
 
@@ -39,7 +39,7 @@ public class DuckFlyTest extends ActionsClient {
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "UNDEFINED");
         getDuckId(runner);
-        duckFly(runner, "${duckId}");
+        duckFly(runner);
         validateResponse(runner, responseMessage);
     }
 

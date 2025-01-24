@@ -19,7 +19,7 @@ public class DuckSwimTest extends ActionsClient {
 
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
         getDuckId(runner);
-        duckSwim(runner, "${duckId}");
+        duckSwim(runner);
         validateResponse(runner, responseMessage);
     }
 
@@ -28,10 +28,10 @@ public class DuckSwimTest extends ActionsClient {
     public void duckWithoutIdSwimming(@Optional @CitrusResource TestCaseRunner runner) {
         createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
         getDuckId(runner);
-        long idDuck = getIntegerDuckId(runner, "${duckId}") + 1;
+        setIncrementDuckId(runner);
         String responseMessage = "{\n"
-                + "  \"message\": \"duck with id=" + idDuck + " is not found\"\n" + "}";
-        duckSwim(runner, String.valueOf(idDuck));
+                + "  \"message\": \"duck with id=" + "${duckId}" + " is not found\"\n" + "}";
+        duckSwim(runner);
         validateResponse(runner, responseMessage);
     }
 

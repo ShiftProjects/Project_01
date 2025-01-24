@@ -12,32 +12,42 @@ public class DuckPropertiesTest extends ActionsClient {
     @Test(description = "Проверка получения характеристик утки с material = wood")
     @CitrusTest
     public void successfulPropertiesWoodDuck(@Optional @CitrusResource TestCaseRunner runner) {
+        String color = "even";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wingsState = "FIXED";
 
-        String responseMessage = "{\n" + "  \"color\": \"" + "even" + "\",\n"
-                + "  \"height\": " + 2.21 + ",\n"
-                + "  \"material\": \"" + "wood" + "\",\n"
-                + "  \"sound\": \"" + "quack" + "\",\n"
-                + "  \"wingsState\": \"" + "FIXED"
+        String responseMessage = "{\n" + "  \"color\": \"" + color + "\",\n"
+                + "  \"height\": " + height + ",\n"
+                + "  \"material\": \"" + material + "\",\n"
+                + "  \"sound\": \"" + sound + "\",\n"
+                + "  \"wingsState\": \"" + wingsState
                 + "\"\n" + "}";
 
-        createDuckEvenId(runner, "even", 2.21, "wood", "quack", "FIXED");
-        duckProperties(runner, "${duckId}");
+        createDuckEvenId(runner, true, color, height, material, sound, wingsState);
+        duckProperties(runner);
         validateResponse(runner, responseMessage);
     }
 
     @Test(description = "Проверка получения характеристик утки с material = rubber")
     @CitrusTest
     public void successfulPropertiesRubberDuck(@Optional @CitrusResource TestCaseRunner runner) {
+        String color = "odd";
+        double height = 2.21;
+        String material = "rubber";
+        String sound = "quack";
+        String wingsState = "FIXED";
 
-        String responseMessage = "{\n" + "  \"color\": \"" + "odd" + "\",\n"
-                + "  \"height\": " + 2.21 + ",\n"
-                + "  \"material\": \"" + "rubber" + "\",\n"
-                + "  \"sound\": \"" + "quack" + "\",\n"
-                + "  \"wingsState\": \"" + "FIXED"
+        String responseMessage = "{\n" + "  \"color\": \"" + color + "\",\n"
+                + "  \"height\": " + height + ",\n"
+                + "  \"material\": \"" + material + "\",\n"
+                + "  \"sound\": \"" + sound + "\",\n"
+                + "  \"wingsState\": \"" + wingsState
                 + "\"\n" + "}";
 
-        createDuckOddId(runner, "odd", 2.21, "rubber", "quack", "FIXED");
-        duckProperties(runner, "${duckId}");
+        createDuckEvenId(runner, true, color, height, material, sound, wingsState);
+        duckProperties(runner);
         validateResponse(runner, responseMessage);
     }
 

@@ -19,7 +19,7 @@ public class DuckDeleteTest extends CrudClient {
 
         createDuck(runner, "yellow", 2.21, "wood", "quack", "ACTIVE");
         getDuckId(runner);
-        duckDelete(runner, "${duckId}");
+        duckDelete(runner);
         validateResponse(runner, responseMessage);
     }
 

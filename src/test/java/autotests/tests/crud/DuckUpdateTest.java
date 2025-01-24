@@ -14,27 +14,42 @@ public class DuckUpdateTest extends CrudClient {
     @Test(description = "Проверка изменения цвета и высоты уточки")
     @CitrusTest
     public void successfulUpdateOfColorAndHeight(@Optional @CitrusResource TestCaseRunner runner) {
+        String color = "yellow";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wingsState = "ACTIVE";
+        String color2 = "red";
+        double height2 = 15.81;
 
-        createDuck(runner, "yellow", 2.21, "wood", "quack", "ACTIVE");
+        createDuck(runner, color, height, material, sound, wingsState);
         getDuckId(runner);
 
         String responseMessage = "{\n"
                 + "  \"message\": \"Duck with id = " + "${duckId}" + " is updated\"\n" + "}";
 
-        duckUpdate(runner, "${duckId}", "red", 15.67, "wood", "quack", "ACTIVE");
+        duckUpdate(runner, color2, height2, material, sound, wingsState);
         validateResponse(runner, responseMessage);
     }
 
     @Test(description = "Проверка изменения цвета и звука уточки")
     @CitrusTest
     public void successfulUpdateOfColorAndSound(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 2.21, "wood", "quack", "ACTIVE");
+        String color = "yellow";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wingsState = "ACTIVE";
+        String color2 = "black";
+        String sound2 = "woof";
+
+        createDuck(runner, color, height, material, sound, wingsState);
         getDuckId(runner);
 
         String responseMessage = "{\n"
                 + "  \"message\": \"Duck with id = " + "${duckId}" + " is updated\"\n" + "}";
 
-        duckUpdate(runner, "${duckId}", "black", 2.21, "wood", "woof", "ACTIVE");
+        duckUpdate(runner, color2, height, material, sound2, wingsState);
         validateResponse(runner, responseMessage);
     }
 

@@ -40,8 +40,9 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                         + "\"\n" + "}"));
     }
 
-    //Создание утки с чётным ID
+    //Создание утки с чётным ID (evenFlag = true) или нечётным ID (evenFlag = false)
     public void createDuckEvenId(TestCaseRunner runner,
+                                 boolean evenFlag,
                                  String color,
                                  double height,
                                  String material,
@@ -51,25 +52,9 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
         do {
             createDuck(runner, color, height, material, sound, wingsState);
             getDuckId(runner);
-            id = getIntegerDuckId(runner, "${duckId}");
+            id = getIntegerDuckId(runner);
         }
-        while (id % 2 != 0);
-    }
-
-    //Создание утки с нечётным ID
-    public void createDuckOddId(TestCaseRunner runner,
-                                String color,
-                                double height,
-                                String material,
-                                String sound,
-                                String wingsState) {
-        long id;
-        do {
-            createDuck(runner, color, height, material, sound, wingsState);
-            getDuckId(runner);
-            id = getIntegerDuckId(runner, "${duckId}");
-        }
-        while (id % 2 == 0);
+        while ((id % 2 != 0) == evenFlag);
     }
 
     //Получение тестовой переменной ID уточки
@@ -81,13 +66,21 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                 .extract(fromBody().expression("$.id", "duckId")));
     }
 
-    //Преобразование контекстной переменной "idContext" в тип long
-    public long getIntegerDuckId(TestCaseRunner runner, String idContext) {
+    //Преобразование контекстной переменной "${duckId}" в тип long
+    public long getIntegerDuckId(TestCaseRunner runner) {
         AtomicInteger id = new AtomicInteger();
         runner.$(action -> {
-            id.set(Integer.parseInt(action.getVariable(idContext)));
+            id.set(Integer.parseInt(action.getVariable("${duckId}")));
         });
         return id.longValue();
+    }
+
+    //Инкремент контекстной переменной "${duckId}"
+    public void setIncrementDuckId(TestCaseRunner runner) {
+        long id = getIntegerDuckId(runner) + 1;
+        runner.$(action -> {
+            action.setVariable("${duckId}", id);
+        });
     }
 
     //Валидация ответа
@@ -117,41 +110,40 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
 
 
     //Показать характеристики
-    public void duckProperties(TestCaseRunner runner, String id) {
+    public void duckProperties(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .send()
                 .get("/api/duck/action/properties")
-                .queryParam("id", id));
+                .queryParam("id", "${duckId}"));
     }
 
     //крякай, уточка!
     public void duckQuack(TestCaseRunner runner,
-                          String id,
                           int repetitionCount,
                           int soundCount) {
         runner.$(http().client(duckService)
                 .send()
                 .get("/api/duck/action/quack")
-                .queryParam("id", id)
+                .queryParam("id", "${duckId}")
                 .queryParam("repetitionCount", String.valueOf(repetitionCount))
                 .queryParam("soundCount", String.valueOf(soundCount)))
         ;
     }
 
     //плыви, уточка!
-    public void duckSwim(TestCaseRunner runner, String id) {
+    public void duckSwim(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .send()
                 .get("/api/duck/action/swim")
-                .queryParam("id", id));
+                .queryParam("id", "${duckId}"));
     }
 
     //лети, уточка!
-    public void duckFly(TestCaseRunner runner, String id) {
+    public void duckFly(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .send()
                 .get("/api/duck/action/fly")
-                .queryParam("id", id));
+                .queryParam("id", "${duckId}"));
     }
 
 }

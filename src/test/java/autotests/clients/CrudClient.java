@@ -50,11 +50,11 @@ public class CrudClient extends TestNGCitrusSpringSupport {
                 .extract(fromBody().expression("$.id", "duckId")));
     }
 
-    //Преобразование контекстной переменной "idContext" в тип long
-    public long getIntegerDuckId(TestCaseRunner runner, String idContext) {
+    //Преобразование контекстной переменной "${duckId}" в тип long
+    public long getIntegerDuckId(TestCaseRunner runner) {
         AtomicInteger id = new AtomicInteger();
         runner.$(action -> {
-            id.set(Integer.parseInt(action.getVariable(idContext)));
+            id.set(Integer.parseInt(action.getVariable("${duckId}")));
         });
         return id.longValue();
     }
@@ -70,7 +70,6 @@ public class CrudClient extends TestNGCitrusSpringSupport {
 
     //запрос на изменение уточки
     public void duckUpdate(TestCaseRunner runner,
-                           String id,
                            String color,
                            double height,
                            String material,
@@ -81,18 +80,18 @@ public class CrudClient extends TestNGCitrusSpringSupport {
                 .put("/api/duck/update")
                 .queryParam("color", color)
                 .queryParam("height", String.valueOf(height))
-                .queryParam("id", id)
+                .queryParam("id", "${duckId}")
                 .queryParam("material", material)
                 .queryParam("sound", sound)
                 .queryParam("wingsState", wingsState));
     }
 
     //запрос на удаление уточки
-    public void duckDelete(TestCaseRunner runner, String id) {
+    public void duckDelete(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .send()
                 .delete("/api/duck/delete")
-                .queryParam("id", id));
+                .queryParam("id", "${duckId}"));
     }
 
 
