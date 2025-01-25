@@ -1,6 +1,8 @@
 package autotests.tests.actions;
 
 import autotests.clients.ActionsClient;
+import autotests.payloads.Duck;
+import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -14,25 +16,36 @@ public class DuckSwimTest extends ActionsClient {
     @Test(description = "Проверка того, что уточка поплыла")
     @CitrusTest
     public void successfulSwim(@Optional @CitrusResource TestCaseRunner runner) {
-        String responseMessage = "{\n" + "  \"message\": \"I'm swimming\"\n" + "}";
-        long idDuck;
+        Duck testDuck = new Duck()
+                .color("yellow")
+                .height(2.21)
+                .sound("quack")
+                .material("rubber")
+                .wingsState(WingState.ACTIVE);
+        String responseMessage = "actions/getDuckSwimTest/successfulSwim.json";
 
-        createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
+        createDuck(runner, testDuck);
         getDuckId(runner);
         duckSwim(runner);
-        validateResponse(runner, responseMessage);
+        validateResponseResources(runner, responseMessage);
     }
 
     @Test(description = "Проверка ответа на запрос Плыть уточке с несуществующим ID")
     @CitrusTest
     public void duckWithoutIdSwimming(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 2.21, "rubber", "quack", "ACTIVE");
+        Duck testDuck = new Duck()
+                .color("yellow")
+                .height(2.21)
+                .sound("quack")
+                .material("rubber")
+                .wingsState(WingState.ACTIVE);
+        createDuck(runner, testDuck);
         getDuckId(runner);
         setIncrementDuckId(runner);
         String responseMessage = "{\n"
                 + "  \"message\": \"duck with id=" + "${duckId}" + " is not found\"\n" + "}";
         duckSwim(runner);
-        validateResponse(runner, responseMessage);
+        validateResponseString(runner, responseMessage);
     }
 
 

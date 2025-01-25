@@ -3,8 +3,11 @@ package autotests.clients;
 import autotests.EndpointConfig;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
 import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,36 +24,20 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
 
 
     //Создание утки
-    public void createDuck(TestCaseRunner runner,
-                           String color,
-                           double height,
-                           String material,
-                           String sound,
-                           String wingsState) {
+    public void createDuck(TestCaseRunner runner, Object body) {
         runner.$(http().client(duckService)
                 .send()
                 .post("/api/duck/create")
                 .message()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("{\n" + "  \"color\": \"" + color + "\",\n"
-                        + "  \"height\": " + height + ",\n"
-                        + "  \"material\": \"" + material + "\",\n"
-                        + "  \"sound\": \"" + sound + "\",\n"
-                        + "  \"wingsState\": \"" + wingsState
-                        + "\"\n" + "}"));
+                .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
     }
 
     //Создание утки с чётным ID (evenFlag = true) или нечётным ID (evenFlag = false)
-    public void createDuckEvenId(TestCaseRunner runner,
-                                 boolean evenFlag,
-                                 String color,
-                                 double height,
-                                 String material,
-                                 String sound,
-                                 String wingsState) {
+    public void createDuckEvenId(TestCaseRunner runner, boolean evenFlag, Object body) {
         long id;
         do {
-            createDuck(runner, color, height, material, sound, wingsState);
+            createDuck(runner, body);
             getDuckId(runner);
             id = getIntegerDuckId(runner);
         }
@@ -77,19 +64,39 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
 
     //Инкремент контекстной переменной "${duckId}"
     public void setIncrementDuckId(TestCaseRunner runner) {
-        long id = getIntegerDuckId(runner) + 1;
         runner.$(action -> {
-            action.setVariable("${duckId}", id);
+            action.setVariable("${duckId}", getIntegerDuckId(runner) + 1);
         });
     }
 
-    //Валидация ответа
-    public void validateResponse(TestCaseRunner runner, String responseMessage) {
+    //Валидация ответа с передачей ответа String’ой
+    public void validateResponseString(TestCaseRunner runner, String responseMessage) {
         runner.$(http().client(duckService)
                 .receive()
                 .response(HttpStatus.OK)
                 .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(responseMessage));
+    }
+
+    //Валидация ответа с передачей ответа из папки Payload
+    public void validateResponsePayload(TestCaseRunner runner, Object body) {
+        runner.$(http().client(duckService)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
+    }
+
+    //Валидация ответа с передачей ответа из папки Resources
+    public void validateResponseResources(TestCaseRunner runner, String responseMessage) {
+        runner.$(http().client(duckService)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ClassPathResource(responseMessage)));
     }
 
 

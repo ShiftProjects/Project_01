@@ -1,6 +1,9 @@
 package autotests.tests.crud;
 
 import autotests.clients.CrudClient;
+import autotests.payloads.Duck;
+import autotests.payloads.Message;
+import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -14,43 +17,49 @@ public class DuckUpdateTest extends CrudClient {
     @Test(description = "Проверка изменения цвета и высоты уточки")
     @CitrusTest
     public void successfulUpdateOfColorAndHeight(@Optional @CitrusResource TestCaseRunner runner) {
-        String color = "yellow";
-        double height = 2.21;
-        String material = "wood";
-        String sound = "quack";
-        String wingsState = "ACTIVE";
-        String color2 = "red";
-        double height2 = 15.81;
+        Duck testDuck = new Duck()
+                .color("yellow")
+                .height(2.21)
+                .sound("quack")
+                .material("wood")
+                .wingsState(WingState.ACTIVE);
+        Duck testDuck2 = new Duck()
+                .color("red")
+                .height(15.81)
+                .sound("quack")
+                .material("wood")
+                .wingsState(WingState.ACTIVE);
 
-        createDuck(runner, color, height, material, sound, wingsState);
+        createDuck(runner, testDuck);
         getDuckId(runner);
+        Message responseMessage = new Message()
+                .message("Duck with id = " + "${duckId}" + " is updated");
 
-        String responseMessage = "{\n"
-                + "  \"message\": \"Duck with id = " + "${duckId}" + " is updated\"\n" + "}";
-
-        duckUpdate(runner, color2, height2, material, sound, wingsState);
-        validateResponse(runner, responseMessage);
+        duckUpdate(runner, testDuck2);
+        validateResponsePayload(runner, responseMessage);
     }
 
     @Test(description = "Проверка изменения цвета и звука уточки")
     @CitrusTest
     public void successfulUpdateOfColorAndSound(@Optional @CitrusResource TestCaseRunner runner) {
-        String color = "yellow";
-        double height = 2.21;
-        String material = "wood";
-        String sound = "quack";
-        String wingsState = "ACTIVE";
-        String color2 = "black";
-        String sound2 = "woof";
+        Duck testDuck = new Duck()
+                .color("yellow")
+                .height(2.21)
+                .sound("quack")
+                .material("wood")
+                .wingsState(WingState.ACTIVE);
 
-        createDuck(runner, color, height, material, sound, wingsState);
+        createDuck(runner, testDuck);
         getDuckId(runner);
+
+        testDuck.color("black");
+        testDuck.sound("woof");
 
         String responseMessage = "{\n"
                 + "  \"message\": \"Duck with id = " + "${duckId}" + " is updated\"\n" + "}";
 
-        duckUpdate(runner, color2, height, material, sound2, wingsState);
-        validateResponse(runner, responseMessage);
+        duckUpdate(runner, testDuck);
+        validateResponseString(runner, responseMessage);
     }
 
 
