@@ -31,7 +31,7 @@ public class DuckUpdateTest extends CrudClient {
                 .wingsState(WingState.ACTIVE);
 
         createDuck(runner, testDuck);
-        getDuckId(runner);
+        setTestVariableDuckId(runner);
         Message responseMessage = new Message()
                 .message("Duck with id = " + "${duckId}" + " is updated");
 
@@ -50,7 +50,7 @@ public class DuckUpdateTest extends CrudClient {
                 .wingsState(WingState.ACTIVE);
 
         createDuck(runner, testDuck);
-        getDuckId(runner);
+        setTestVariableDuckId(runner);
 
         testDuck.color("black");
         testDuck.sound("woof");

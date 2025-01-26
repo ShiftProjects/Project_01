@@ -25,7 +25,7 @@ public class DuckFlyTest extends ActionsClient {
         String responseMessage = "actions/getDuckFlyTest/successfulFly.json";
 
         createDuck(runner, testDuck);
-        getDuckId(runner);
+        setTestVariableDuckId(runner);
         duckFly(runner);
         validateResponseResources(runner, responseMessage);
     }
@@ -42,7 +42,7 @@ public class DuckFlyTest extends ActionsClient {
         String responseMessage = "actions/getDuckFlyTest/unsuccessfulFly.json";
 
         createDuck(runner, testDuck);
-        getDuckId(runner);
+        setTestVariableDuckId(runner);
         duckFly(runner);
         validateResponseResources(runner, responseMessage);
     }
@@ -60,7 +60,7 @@ public class DuckFlyTest extends ActionsClient {
                 .message("Wings are not detected");
 
         createDuck(runner, testDuck);
-        getDuckId(runner);
+        setTestVariableDuckId(runner);
         duckFly(runner);
         validateResponsePayload(runner, responseMessage);
     }

@@ -26,6 +26,7 @@ public class DuckCreateTest extends CrudClient {
 
         createDuck(runner, testDuck);
         validateResponsePayload(runner, testDuck);
+        validateResponsePayload(runner, testDuck);
     }
 
     @Test(description = "Проверка создания утки с material = wood")

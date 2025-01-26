@@ -6,8 +6,11 @@ import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import org.springframework.test.util.AssertionErrors;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 
 public class DuckDeleteTest extends CrudClient {
@@ -25,9 +28,15 @@ public class DuckDeleteTest extends CrudClient {
         String responseMessage = "crud/getDuckDeleteTest/successfulDeleted.json";
 
         createDuck(runner, testDuck);
-        getDuckId(runner);
-        duckDelete(runner);
+        setTestVariableDuckId(runner);
+        long id = getLongTestVariable(runner, "${duckId}");
+        duckDelete(runner, id);
         validateResponseResources(runner, responseMessage);
+
+        //Проверка, что ID удалённой утки не возвращается по запросу всех ID
+        AssertionErrors.assertFalse("Уточка с id = "
+                + getStringTestVariable(runner, "${duckId}")
+                + " не удалена", presentDuckId(runner));
     }
 
 

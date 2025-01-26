@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.MediaType; //.contentType(MediaType.APPLICATION_JSON_VALUE)
 import org.springframework.test.context.ContextConfiguration;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
@@ -38,14 +38,14 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
         long id;
         do {
             createDuck(runner, body);
-            getDuckId(runner);
-            id = getIntegerDuckId(runner);
+            setTestVariableDuckId(runner);
+            id = getLongTestVariable(runner, "${duckId}");
         }
         while ((id % 2 != 0) == evenFlag);
     }
 
-    //Получение тестовой переменной ID уточки
-    public void getDuckId(TestCaseRunner runner) {
+    //Создание тестовой переменной ID уточки
+    public void setTestVariableDuckId(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .receive()
                 .response(HttpStatus.OK)
@@ -53,19 +53,19 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                 .extract(fromBody().expression("$.id", "duckId")));
     }
 
-    //Преобразование контекстной переменной "${duckId}" в тип long
-    public long getIntegerDuckId(TestCaseRunner runner) {
-        AtomicInteger id = new AtomicInteger();
+    //Преобразование контекстной переменной в тип long
+    public long getLongTestVariable(TestCaseRunner runner, String testVariable) {
+        AtomicLong id = new AtomicLong();
         runner.$(action -> {
-            id.set(Integer.parseInt(action.getVariable("${duckId}")));
+            id.set(Long.parseLong(action.getVariable(testVariable)));
         });
         return id.longValue();
     }
 
-    //Инкремент контекстной переменной "${duckId}"
-    public void setIncrementDuckId(TestCaseRunner runner) {
+    //Инкремент контекстной переменной
+    public void setIncrementTestVariable(TestCaseRunner runner, String testVariable) {
         runner.$(action -> {
-            action.setVariable("${duckId}", getIntegerDuckId(runner) + 1);
+            action.setVariable(testVariable, getLongTestVariable(runner, testVariable) + 1);
         });
     }
 
@@ -95,9 +95,19 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                 .receive()
                 .response(HttpStatus.OK)
                 .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE) //spring
                 .body(new ClassPathResource(responseMessage)));
     }
+
+//    //Валидация ответа с передачей ответа из папки Resources
+//    public void validateResponseResources(TestCaseRunner runner, String responseMessage) {
+//        runner.$(http().client(duckService)
+//                .receive()
+//                .response(HttpStatus.OK)
+//                .message()
+//                .type(MessageType.JSON)  //Citrus
+//                .body(new ClassPathResource(responseMessage)));
+//    }
 
 
     //Формирование звука
