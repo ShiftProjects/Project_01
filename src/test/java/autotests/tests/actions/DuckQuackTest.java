@@ -7,31 +7,39 @@ import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 
+
+@Feature("Эндпоинт /api/duck/action/quack")
 public class DuckQuackTest extends ActionsClient {
 
     @Test(description = "Проверка того, что уточка с чётным ID крякает")
     @CitrusTest
     public void successfulQuackEvenId(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck testDuck = new Duck()
-                .color("even")
-                .height(2.21)
-                .sound("quack")
-                .material("rubber")
-                .wingsState(WingState.ACTIVE);
+        String color = "even";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wings_state = "ACTIVE";
+
+        runner.variable("duckId", generateEvenOddNumber(true)); //задаём случайный ID
         int repetitionCount = 3; // количество повторов серий
         int soundCount = 5; // количество кряков в серии
-        String sound = "quack";
 
         String quackSound = getQuackSound(repetitionCount, soundCount, sound);
         Message responseMessage = new Message()
                 .sound(quackSound);
-//        String responseMessage = "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}";
 
-        createDuckEvenId(runner, true, testDuck);
+        runner.$(doFinally().actions(context ->
+                deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
+
+        createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
+
         duckQuack(runner,
                 repetitionCount,
                 soundCount);
@@ -41,20 +49,24 @@ public class DuckQuackTest extends ActionsClient {
     @Test(description = "Проверка того, что уточка с нечётным ID крякает")
     @CitrusTest
     public void successfulQuackOddId(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck testDuck = new Duck()
-                .color("odd")
-                .height(2.21)
-                .sound("quack")
-                .material("rubber")
-                .wingsState(WingState.ACTIVE);
+        String color = "odd";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wings_state = "ACTIVE";
+
+        runner.variable("duckId", generateEvenOddNumber(false)); //задаём случайный ID
         int repetitionCount = 2; // количество повторов серий
         int soundCount = 3; // количество кваков в серии
-        String sound = "quack";
 
         String quackSound = getQuackSound(repetitionCount, soundCount, sound);
         String responseMessage = "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}";
 
-        createDuckEvenId(runner, false, testDuck);
+        runner.$(doFinally().actions(context ->
+                deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
+
+        createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
+
         duckQuack(runner,
                 repetitionCount,
                 soundCount);

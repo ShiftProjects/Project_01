@@ -6,25 +6,54 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
 import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Step;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType; //.contentType(MediaType.APPLICATION_JSON_VALUE)
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.consol.citrus.actions.ExecuteSQLAction.Builder.sql;
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 @ContextConfiguration(classes = {EndpointConfig.class})
+@Epic("Тесты на duck-action-controller")
 public class ActionsClient extends TestNGCitrusSpringSupport {
     @Autowired
     protected HttpClient duckService;
 
+    @Autowired
+    protected SingleConnectionDataSource testDB;
 
-    //Создание утки
-    public void createDuck(TestCaseRunner runner, Object body) {
+
+    //Создание утки в БД
+    @Step("SQL запрос создания уточки в БД")
+    public void createDuckDB(TestCaseRunner runner, String id,
+                             String color, double height,
+                             String material, String sound,
+                             String wings_state) {
+        runner.$(sql(testDB)
+                .statement("INSERT INTO duck "
+                        + "(id, color, height, material, sound, wings_state)\n"
+                        + "VALUES ('" + id + "', '" + color + "', '" + height + "', '"
+                        + material + "', '" + sound + "', '" + wings_state + "');"));
+    }
+
+    //Удаление утки из БД
+    @Step("SQL запрос удаления уточки из БД")
+    public void deleteDuckDB(TestCaseRunner runner, String id) {
+        runner.$(sql(testDB)
+                .statement("DELETE FROM duck WHERE ID=" + id));
+    }
+
+    //Создание утки через API
+    @Step("POST запрос на создание уточки")
+    public void createDuckAPI(TestCaseRunner runner, Object body) {
         runner.$(http().client(duckService)
                 .send()
                 .post("/api/duck/create")
@@ -33,19 +62,23 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                 .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
     }
 
-    //Создание утки с чётным ID (evenFlag = true) или нечётным ID (evenFlag = false)
-    public void createDuckEvenId(TestCaseRunner runner, boolean evenFlag, Object body) {
-        long id;
+    //Генерация случайного числа, чётного (evenFlag = true) или нечётного (evenFlag = false)
+    @Step("Генерация чётного/нечётного числа")
+    public int generateEvenOddNumber(boolean evenFlag) {
+        int randomValue;
+        int minValue = 1;
+        int maxValue = 1000000000;
+
         do {
-            createDuck(runner, body);
-            setTestVariableDuckId(runner);
-            id = getLongTestVariable(runner, "${duckId}");
+            randomValue = minValue + (int) (Math.random() * (maxValue - minValue + 1));
         }
-        while ((id % 2 != 0) == evenFlag);
+        while ((randomValue % 2 != 0) == evenFlag);
+        return randomValue;
     }
 
     //Создание тестовой переменной ID уточки
-    public void setTestVariableDuckId(TestCaseRunner runner) {
+    @Step("Запись ID уточки из ответа в тестовую переменную")
+    public void createTestVariableDuckId(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .receive()
                 .response(HttpStatus.OK)
@@ -54,6 +87,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //Преобразование контекстной переменной в тип long
+    @Step("Преобразование контекстной переменной в тип long")
     public long getLongTestVariable(TestCaseRunner runner, String testVariable) {
         AtomicLong id = new AtomicLong();
         runner.$(action -> {
@@ -63,6 +97,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //Инкремент контекстной переменной
+    @Step("Инкремент контекстной переменной")
     public void setIncrementTestVariable(TestCaseRunner runner, String testVariable) {
         runner.$(action -> {
             action.setVariable(testVariable, getLongTestVariable(runner, testVariable) + 1);
@@ -70,6 +105,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //Валидация ответа с передачей ответа String’ой
+    @Step("Валидация ответа с передачей ожидаемого ответа String’ой")
     public void validateResponseString(TestCaseRunner runner, String responseMessage) {
         runner.$(http().client(duckService)
                 .receive()
@@ -80,6 +116,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //Валидация ответа с передачей ответа из папки Payload
+    @Step("Валидация ответа с передачей ожидаемого ответа из папки Payload")
     public void validateResponsePayload(TestCaseRunner runner, Object body) {
         runner.$(http().client(duckService)
                 .receive()
@@ -90,6 +127,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //Валидация ответа с передачей ответа из папки Resources
+    @Step("Валидация ответа с передачей ожидаемого ответа из папки Resources")
     public void validateResponseResources(TestCaseRunner runner, String responseMessage) {
         runner.$(http().client(duckService)
                 .receive()
@@ -99,18 +137,9 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                 .body(new ClassPathResource(responseMessage)));
     }
 
-//    //Валидация ответа с передачей ответа из папки Resources
-//    public void validateResponseResources(TestCaseRunner runner, String responseMessage) {
-//        runner.$(http().client(duckService)
-//                .receive()
-//                .response(HttpStatus.OK)
-//                .message()
-//                .type(MessageType.JSON)  //Citrus
-//                .body(new ClassPathResource(responseMessage)));
-//    }
-
 
     //Формирование звука
+    @Step("Формирование звука")
     public String getQuackSound(int repetitionCount,
                                 int soundCount,
                                 String sound) {
@@ -126,7 +155,8 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
 
-    //Показать характеристики
+    //Показать свойства уточки
+    @Step("GET запрос на получение свойств уточки")
     public void duckProperties(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .send()
@@ -135,6 +165,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //крякай, уточка!
+    @Step("GET запрос 'крякай'")
     public void duckQuack(TestCaseRunner runner,
                           int repetitionCount,
                           int soundCount) {
@@ -148,6 +179,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //плыви, уточка!
+    @Step("GET запрос 'плыви'")
     public void duckSwim(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .send()
@@ -156,6 +188,7 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
     }
 
     //лети, уточка!
+    @Step("GET запрос 'лети'")
     public void duckFly(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .send()

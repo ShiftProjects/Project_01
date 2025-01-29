@@ -6,28 +6,34 @@ import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
+import static io.qameta.allure.SeverityLevel.CRITICAL;
 
-//Тест не валидирует результат после использования запроса DELETE.
-//После DELETE необходимо перезапастить сервис.
+//Тест не валидирует результат c изначально непустой БД и/или в многопоточном режиме.
+@Feature("Эндпоинт /api/duck/getAllIds")
 public class DuckGetAllIdsTest extends CrudClient {
     @Test(description = "Проверка получения ID всех уточек (не работает после DELETE")
     @CitrusTest
+    @Severity(CRITICAL)
     public void successfulGetAllIds(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck testDuck = new Duck()
-                .color("yellow")
-                .height(2.21)
-                .sound("quack")
-                .material("wood")
-                .wingsState(WingState.ACTIVE);
-        //String responseMessage = "[1,2,3,4,5]";
+        String color = "yellow";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wings_state = "ACTIVE";
 
-        createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
-        String responseMessage = arrayString(runner);
+        runner.variable("duckId", "citrus:randomNumber(10, true)"); //задаём случайный ID
+        String responseMessage = "[${duckId}]";
+
+        runner.$(doFinally().actions(context ->
+                deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
+
+        createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
         getDuckAllIds(runner);
         validateResponseString(runner, responseMessage);
     }

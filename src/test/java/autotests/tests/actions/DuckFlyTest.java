@@ -7,61 +7,80 @@ import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Feature;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
+
+@Feature("Эндпоинт /api/duck/action/fly")
 public class DuckFlyTest extends ActionsClient {
 
 
     @Test(description = "Проверка того, что уточка полетела")
     @CitrusTest
     public void successfulFly(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck testDuck = new Duck()
-                .color("yellow")
-                .height(2.21)
-                .sound("quack")
-                .material("rubber")
-                .wingsState(WingState.ACTIVE);
-        String responseMessage = "actions/getDuckFlyTest/successfulFly.json";
+        String color = "yellow";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wings_state = "ACTIVE";
 
-        createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        runner.variable("duckId", "citrus:randomNumber(10, true)"); //задаём случайный ID
+
+        runner.$(doFinally().actions(context ->
+                deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
+
+        createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
+
         duckFly(runner);
-        validateResponseResources(runner, responseMessage);
+
+        // проверка ответа сервера
+        validateResponseResources(runner, "actions/getDuckFlyTest/successfulFly.json");
     }
 
     @Test(description = "Проверка того, что уточка не может лететь со связанными крыльями")
     @CitrusTest
     public void successfulNotFly(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck testDuck = new Duck()
-                .color("yellow")
-                .height(2.21)
-                .sound("quack")
-                .material("rubber")
-                .wingsState(WingState.FIXED);
-        String responseMessage = "actions/getDuckFlyTest/unsuccessfulFly.json";
+        String color = "yellow";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wings_state = "FIXED";
 
-        createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        runner.variable("duckId", "citrus:randomNumber(10, true)"); //задаём случайный ID
+
+        runner.$(doFinally().actions(context ->
+                deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
+
+        createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
+
         duckFly(runner);
-        validateResponseResources(runner, responseMessage);
+
+        // проверка ответа сервера
+        validateResponseResources(runner, "actions/getDuckFlyTest/unsuccessfulFly.json");
     }
 
     @Test(description = "Проверка ответа на запрос Лететь уточке с крыльями в неопределенном состоянии")
     @CitrusTest
     public void successfulUndefinedStateOfWings(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck testDuck = new Duck()
-                .color("yellow")
-                .height(2.21)
-                .sound("quack")
-                .material("rubber")
-                .wingsState(WingState.UNDEFINED);
-        Message responseMessage = new Message()
-                .message("Wings are not detected");
+        String color = "yellow";
+        double height = 2.21;
+        String material = "wood";
+        String sound = "quack";
+        String wings_state = "UNDEFINED";
 
-        createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        runner.variable("duckId", "citrus:randomNumber(10, true)"); //задаём случайный ID
+        Message responseMessage = new Message().message("Wings are not detected");
+
+        runner.$(doFinally().actions(context ->
+                deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
+
+        createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
+
         duckFly(runner);
+
+        // проверка ответа сервера
         validateResponsePayload(runner, responseMessage);
     }
 
