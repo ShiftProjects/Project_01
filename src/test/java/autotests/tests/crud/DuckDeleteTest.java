@@ -10,8 +10,6 @@ import org.springframework.test.util.AssertionErrors;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-
 
 public class DuckDeleteTest extends CrudClient {
 
@@ -28,7 +26,7 @@ public class DuckDeleteTest extends CrudClient {
         String responseMessage = "crud/getDuckDeleteTest/successfulDeleted.json";
 
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
         long id = getLongTestVariable(runner, "${duckId}");
         duckDelete(runner, id);
         validateResponseResources(runner, responseMessage);

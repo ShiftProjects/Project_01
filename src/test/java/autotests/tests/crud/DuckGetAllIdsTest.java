@@ -26,7 +26,7 @@ public class DuckGetAllIdsTest extends CrudClient {
         //String responseMessage = "[1,2,3,4,5]";
 
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
         String responseMessage = arrayString(runner);
         getDuckAllIds(runner);
         validateResponseString(runner, responseMessage);

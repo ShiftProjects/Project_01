@@ -13,14 +13,19 @@ import lombok.experimental.Accessors;
 public class Duck {
     @JsonProperty("id")
     private String id;
+
     @JsonProperty("color")
     private String color;
+
     @JsonProperty("height")
     private Double height;
+
     @JsonProperty("material")
     private String material;
+
     @JsonProperty("sound")
     private String sound;
+
     @JsonProperty("wingsState")
     private WingState wingsState;
 }

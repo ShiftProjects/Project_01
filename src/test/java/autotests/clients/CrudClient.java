@@ -38,7 +38,7 @@ public class CrudClient extends TestNGCitrusSpringSupport {
     }
 
     //Создание тестовой переменной ID уточки
-    public void setTestVariableDuckId(TestCaseRunner runner) {
+    public void createTestVariableDuckId(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .receive()
                 .response(HttpStatus.OK)
@@ -47,7 +47,7 @@ public class CrudClient extends TestNGCitrusSpringSupport {
     }
 
     //Создание тестовой переменной с массивом ID всех уточек
-    public void setTestVariableAllIds(TestCaseRunner runner) {
+    public void createTestVariableAllIds(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .receive()
                 .response(HttpStatus.OK)
@@ -98,7 +98,7 @@ public class CrudClient extends TestNGCitrusSpringSupport {
     //Присутствие ID утки в списке возвращаемом по запросу getDuckAllIds
     public boolean presentDuckId(TestCaseRunner runner) {
         getDuckAllIds(runner);
-        setTestVariableAllIds(runner); //создаётся тестовая переменная ${arr}
+        createTestVariableAllIds(runner); //создаётся тестовая переменная ${arr}
         String strArr = getStringTestVariable(runner, "${arr}"); // strArr из ${arr}
         long[] arrId = stringToLongArr(strArr); //массив ID всех уток
         return elementPresentInArray(arrId, getLongTestVariable(runner, "${duckId}"));

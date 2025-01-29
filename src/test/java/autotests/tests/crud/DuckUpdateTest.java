@@ -23,19 +23,17 @@ public class DuckUpdateTest extends CrudClient {
                 .sound("quack")
                 .material("wood")
                 .wingsState(WingState.ACTIVE);
-        Duck testDuck2 = new Duck()
-                .color("red")
-                .height(15.81)
-                .sound("quack")
-                .material("wood")
-                .wingsState(WingState.ACTIVE);
 
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
+
+        testDuck.color("black");
+        testDuck.height(15.81);
+
         Message responseMessage = new Message()
                 .message("Duck with id = " + "${duckId}" + " is updated");
 
-        duckUpdate(runner, testDuck2);
+        duckUpdate(runner, testDuck);
         validateResponsePayload(runner, responseMessage);
     }
 
@@ -50,7 +48,7 @@ public class DuckUpdateTest extends CrudClient {
                 .wingsState(WingState.ACTIVE);
 
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
 
         testDuck.color("black");
         testDuck.sound("woof");

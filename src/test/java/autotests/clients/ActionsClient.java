@@ -38,14 +38,14 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
         long id;
         do {
             createDuck(runner, body);
-            setTestVariableDuckId(runner);
+            createTestVariableDuckId(runner);
             id = getLongTestVariable(runner, "${duckId}");
         }
         while ((id % 2 != 0) == evenFlag);
     }
 
     //Создание тестовой переменной ID уточки
-    public void setTestVariableDuckId(TestCaseRunner runner) {
+    public void createTestVariableDuckId(TestCaseRunner runner) {
         runner.$(http().client(duckService)
                 .receive()
                 .response(HttpStatus.OK)
@@ -98,16 +98,6 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                 .contentType(MediaType.APPLICATION_JSON_VALUE) //spring
                 .body(new ClassPathResource(responseMessage)));
     }
-
-//    //Валидация ответа с передачей ответа из папки Resources
-//    public void validateResponseResources(TestCaseRunner runner, String responseMessage) {
-//        runner.$(http().client(duckService)
-//                .receive()
-//                .response(HttpStatus.OK)
-//                .message()
-//                .type(MessageType.JSON)  //Citrus
-//                .body(new ClassPathResource(responseMessage)));
-//    }
 
 
     //Формирование звука

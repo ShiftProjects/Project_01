@@ -46,7 +46,7 @@ public class DuckPropertiesTest extends ActionsClient {
 
         createDuckEvenId(runner, true, testDuck);
         duckProperties(runner);
-        validateResponsePayload(runner, true);
+        validateResponsePayload(runner, testDuck);
     }
 
 

@@ -22,12 +22,11 @@ public class DuckFlyTest extends ActionsClient {
                 .sound("quack")
                 .material("rubber")
                 .wingsState(WingState.ACTIVE);
-        String responseMessage = "actions/getDuckFlyTest/successfulFly.json";
 
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
         duckFly(runner);
-        validateResponseResources(runner, responseMessage);
+        validateResponseResources(runner, "actions/getDuckFlyTest/successfulFly.json");
     }
 
     @Test(description = "Проверка того, что уточка не может лететь со связанными крыльями")
@@ -39,12 +38,11 @@ public class DuckFlyTest extends ActionsClient {
                 .sound("quack")
                 .material("rubber")
                 .wingsState(WingState.FIXED);
-        String responseMessage = "actions/getDuckFlyTest/unsuccessfulFly.json";
 
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
         duckFly(runner);
-        validateResponseResources(runner, responseMessage);
+        validateResponseResources(runner, "actions/getDuckFlyTest/unsuccessfulFly.json");
     }
 
     @Test(description = "Проверка ответа на запрос Лететь уточке с крыльями в неопределенном состоянии")
@@ -60,7 +58,7 @@ public class DuckFlyTest extends ActionsClient {
                 .message("Wings are not detected");
 
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
         duckFly(runner);
         validateResponsePayload(runner, responseMessage);
     }

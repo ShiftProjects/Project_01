@@ -25,7 +25,7 @@ public class DuckSwimTest extends ActionsClient {
         String responseMessage = "actions/getDuckSwimTest/successfulSwim.json";
 
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
         duckSwim(runner);
         validateResponseResources(runner, responseMessage);
     }
@@ -40,7 +40,7 @@ public class DuckSwimTest extends ActionsClient {
                 .material("rubber")
                 .wingsState(WingState.ACTIVE);
         createDuck(runner, testDuck);
-        setTestVariableDuckId(runner);
+        createTestVariableDuckId(runner);
         setIncrementTestVariable(runner, "${duckId}");
         String responseMessage = "{\n"
                 + "  \"message\": \"duck with id=" + "${duckId}" + " is not found\"\n" + "}";

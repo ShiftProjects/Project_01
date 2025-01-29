@@ -17,16 +17,23 @@ public class DuckCreateTest extends CrudClient {
     @CitrusTest
     public void successfulCreationRubberDuck(@Optional @CitrusResource TestCaseRunner runner) {
         Duck testDuck = new Duck()
-                .id("@ignore@")
                 .color("yellow")
                 .height(2.21)
                 .sound("quack")
                 .material("rubber")
                 .wingsState(WingState.ACTIVE);
 
+        String responseMessage = "{\n"
+                + "  \"id\": \"@ignore@\"" + ",\n"
+                + "  \"color\": \"" + testDuck.color() + "\",\n"
+                + "  \"height\": " + testDuck.height() + ",\n"
+                + "  \"material\": \"" + testDuck.material() + "\",\n"
+                + "  \"sound\": \"" + testDuck.sound() + "\",\n"
+                + "  \"wingsState\": \"" + testDuck.wingsState()
+                + "\"\n" + "}";
+
         createDuck(runner, testDuck);
-        validateResponsePayload(runner, testDuck);
-        validateResponsePayload(runner, testDuck);
+        validateResponseString(runner, responseMessage);
     }
 
     @Test(description = "Проверка создания утки с material = wood")
