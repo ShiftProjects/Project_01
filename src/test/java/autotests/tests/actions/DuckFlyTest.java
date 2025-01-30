@@ -1,9 +1,7 @@
 package autotests.tests.actions;
 
 import autotests.clients.ActionsClient;
-import autotests.payloads.Duck;
 import autotests.payloads.Message;
-import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;

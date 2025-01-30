@@ -2,19 +2,17 @@ package autotests;
 
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
+import com.consol.citrus.message.MessagePayloadBuilder;
 import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.Step;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.sql.DataSource;
+
 import static com.consol.citrus.actions.ExecuteSQLAction.Builder.sql;
-import static com.consol.citrus.actions.ExecuteSQLQueryAction.Builder.query;
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
@@ -27,106 +25,93 @@ public class BaseTest extends TestNGCitrusSpringSupport {
     @Autowired
     protected SingleConnectionDataSource testDB;
 
-    //Создание утки в БД
-    @Step("SQL запрос создания уточки в БД")
-    protected void createDuckDB(TestCaseRunner runner, String id,
-                             String color, double height,
-                             String material, String sound,
-                             String wings_state) {
-        runner.$(sql(testDB)
-                .statement("INSERT INTO duck "
-                        + "(id, color, height, material, sound, wings_state)\n"
-                        + "VALUES ('" + id + "', '" + color + "', '" + height + "', '"
-                        + material + "', '" + sound + "', '" + wings_state + "');"));
+    //Запрос методом sql() к БД
+    protected void sqlStatementSQL(TestCaseRunner runner, DataSource dataSource, String sql) {
+        runner.$(sql(dataSource)
+                .statement(sql));
     }
 
-    //Удаление утки из БД
-    @Step("SQL запрос удаления уточки из БД")
-    protected void deleteDuckDB(TestCaseRunner runner, String id) {
-        runner.$(sql(testDB)
-                .statement("DELETE FROM duck WHERE ID=" + id));
-    }
-
-    //Проверка наличия уточки в БД
-    @Step("Проверка наличия уточки в БД")
-    protected void validateDuckInDB(TestCaseRunner runner, String id,
-                                    String color, double height,
-                                    String material, String sound,
-                                    String wingsState) {
-        runner.$(query(testDB)
-                .statement("SELECT * FROM duck WHERE ID=" + id)
-                .validate("COLOR", color)
-                .validate("HEIGHT", String.valueOf(height))
-                .validate("MATERIAL", material)
-                .validate("SOUND", sound)
-                .validate("WINGS_STATE", wingsState));
-    }
-
-    //Проверка отсутствия уточки в БД
-    @Step("Проверка отсутствия уточки в БД")
-    protected void validateNotPresentDuckInDB(TestCaseRunner runner, String id) {
-        runner.$(query(testDB)
-                .statement("SELECT id FROM duck WHERE ID=" + id)
-                .validate("ID", "NULL"));
-    }
-
-    //Валидация ответа с передачей ответа String’ой
-    @Step("Валидация ответа с передачей ожидаемого ответа String’ой")
-    public void validateResponseString(TestCaseRunner runner, String responseMessage) {
-        runner.$(http().client(duckService)
+    //Получение ответа на API запросс передачей ожидаемого ответа String’ой
+    protected void responseReceiveString(TestCaseRunner runner, HttpClient httpClient,
+                                         HttpStatus httpStatus, String contentType,
+                                         String payload) {
+        runner.$(http().client(httpClient)
                 .receive()
-                .response(HttpStatus.OK)
+                .response(httpStatus)
                 .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
+                .contentType(contentType)
+                .body(payload));
     }
 
-    //Валидация ответа с передачей ответа String’ой с сохранением ID
-    @Step("Валидация ответа с передачей ожидаемого ответа String’ой")
-    public void validateResponseStringAndSaveId(TestCaseRunner runner, String responseMessage) {
-        runner.$(http().client(duckService)
+    //Получение ответа на API запросс передачей ожидаемого ответа String’ой
+    // с сохранением тестовой переменной
+    protected void responseReceiveStringAndSaveId(TestCaseRunner runner, HttpClient httpClient,
+                                                  HttpStatus httpStatus, String contentType,
+                                                  String payload, String path, Object variableName) {
+        runner.$(http().client(httpClient)
                 .receive()
-                .response(HttpStatus.OK)
+                .response(httpStatus)
                 .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage)
-                .extract(fromBody().expression("$.id", "duckId")));
+                .contentType(contentType)
+                .body(payload)
+                .extract(fromBody()
+                        .expression(path, variableName)));
     }
 
-
-    //Валидация ответа с передачей ответа из папки Payload
-    @Step("Валидация ответа с передачей ожидаемого ответа из папки Payload")
-    public void validateResponsePayload(TestCaseRunner runner, Object body) {
-        runner.$(http().client(duckService)
+    //Получение ответа на API запрос с передачей ожидаемого ответа из папки Payload
+    protected void responseReceivePayload(TestCaseRunner runner, HttpClient httpClient,
+                                          HttpStatus httpStatus, String contentType,
+                                          MessagePayloadBuilder payload) {
+        runner.$(http().client(httpClient)
                 .receive()
-                .response(HttpStatus.OK)
+                .response(httpStatus)
                 .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
+                .contentType(contentType)
+                .body(payload));
     }
 
-
-    //Валидация ответа с передачей ответа из папки Resources
-    @Step("Валидация ответа с передачей ожидаемого ответа из папки Resources")
-    public void validateResponseResources(TestCaseRunner runner, String responseMessage) {
-        runner.$(http().client(duckService)
+    //Получение ответа на API запрос с передачей ожидаемого ответа из папки Resources
+    protected void responseReceiveResources(TestCaseRunner runner, HttpClient httpClient,
+                                            HttpStatus httpStatus, String contentType,
+                                            Resource payload) {
+        runner.$(http().client(httpClient)
                 .receive()
-                .response(HttpStatus.OK)
+                .response(httpStatus)
                 .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ClassPathResource(responseMessage)));
+                .contentType(contentType)
+                .body(payload));
     }
 
-    //Генерация случайного числа, чётного (evenFlag = true) или нечётного (evenFlag = false)
-    @Step("Генерация чётного/нечётного числа")
-    public int generateEvenOddNumber(boolean evenFlag) {
-        int randomValue;
-        int minValue = 1;
-        int maxValue = 1000000000;
+    //API запрос GET
+    protected void getSendAPI(TestCaseRunner runner, HttpClient httpClient, String path) {
+        runner.$(http().client(httpClient)
+                .send()
+                .get(path));
+    }
 
-        do {
-            randomValue = minValue + (int) (Math.random() * (maxValue - minValue + 1));
-        }
-        while ((randomValue % 2 != 0) == evenFlag);
-        return randomValue;
+    //API запрос POST с передачей тела из папки Payload
+    protected void postSendAPIPayload(TestCaseRunner runner, HttpClient httpClient, String path,
+                                      String contentType, MessagePayloadBuilder payload) {
+        runner.$(http().client(httpClient)
+                .send()
+                .post(path)
+                .message()
+                .contentType(contentType)
+                .body(payload));
+    }
+
+    //API запрос PUT
+    protected void putSendAPI(TestCaseRunner runner, HttpClient httpClient, String path) {
+        runner.$(http().client(httpClient)
+                .send()
+                .put(path));
+    }
+
+    //API запрос DELETE
+    protected void deleteSendAPI(TestCaseRunner runner, HttpClient httpClient, String path) {
+        runner.$(http().client(httpClient)
+                .send()
+                .delete(path));
     }
 
 

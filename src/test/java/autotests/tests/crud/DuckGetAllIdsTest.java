@@ -1,8 +1,6 @@
 package autotests.tests.crud;
 
 import autotests.clients.CrudClient;
-import autotests.payloads.Duck;
-import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
