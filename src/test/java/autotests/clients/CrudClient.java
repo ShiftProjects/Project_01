@@ -91,45 +91,6 @@ public class CrudClient extends TestNGCitrusSpringSupport {
     }
 
 
-    //Создание тестовой переменной с массивом ID всех уточек
-    @Step("Запись массива ID всех уточек из ответа в тестовую переменную")
-    public void createTestVariableAllIds(TestCaseRunner runner) {
-        runner.$(http().client(duckService)
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .extract(fromBody().expression("$", "arr"))
-        );
-    }
-
-    //Преобразование контекстной переменной в тип long
-    @Step("Преобразование контекстной переменной в тип long")
-    public long getLongTestVariable(TestCaseRunner runner, String testVariable) {
-        AtomicLong id = new AtomicLong();
-        runner.$(action -> {
-            id.set(Long.parseLong(action.getVariable(testVariable)));
-        });
-        return id.longValue();
-    }
-
-    //Преобразование контекстной переменной в тип String
-    @Step("Преобразование контекстной переменной в тип String")
-    public String getStringTestVariable(TestCaseRunner runner, String testVariable) {
-        StringBuilder str = new StringBuilder();
-        runner.$(action -> {
-            str.append(action.getVariable(testVariable));
-        });
-        return str.toString();
-    }
-
-    //Преобразование String в массив long
-    @Step("Преобразование массива из String в long")
-    public long[] stringToLongArr(String str) {
-        return Stream.of(str.replaceAll("[\\[\\]\\s]", "")
-                .split(",")).mapToLong(Long::parseLong).toArray();
-    }
-
-
     //Валидация ответа с передачей ответа String’ой
     @Step("Валидация ответа с передачей ожидаемого ответа String’ой")
     public void validateResponseString(TestCaseRunner runner, String responseMessage) {
@@ -151,22 +112,6 @@ public class CrudClient extends TestNGCitrusSpringSupport {
                 .extract(fromBody().expression("$.id", "duckId")));
     }
 
-    //Проверка элемента в массиве
-    @Step("Проверка элемента в массиве long")
-    public boolean elementPresentInArray(long[] array, long element) {
-        return Arrays.stream(array).anyMatch(id -> id == element);
-    }
-
-    //Присутствие ID утки в списке возвращаемом по запросу getDuckAllIds
-    @Step("Присутствие ID утки в полученном списке")
-    public boolean presentDuckId(TestCaseRunner runner) {
-        getDuckAllIds(runner);
-        createTestVariableAllIds(runner); //создаётся тестовая переменная ${arr}
-        String strArr = getStringTestVariable(runner, "${arr}"); // strArr из ${arr}
-        if (strArr.equals("[]")) return false;
-        long[] arrId = stringToLongArr(strArr); //массив ID всех уток
-        return elementPresentInArray(arrId, getLongTestVariable(runner, "${duckId}"));
-    }
 
     //Валидация ответа с передачей ответа из папки Payload
     @Step("Валидация ответа с передачей ожидаемого ответа из папки Payload")
@@ -179,17 +124,6 @@ public class CrudClient extends TestNGCitrusSpringSupport {
                 .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
     }
 
-    //Валидация ответа с передачей ответа из папки Payload с сохранением ID
-    @Step("Валидация ответа с передачей ожидаемого ответа из папки Payload")
-    public void validateResponsePayloadAndSaveId(TestCaseRunner runner, Object body) {
-        runner.$(http().client(duckService)
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper()))
-                .extract(fromBody().expression("$.id", "duckId")));
-    }
 
     //Валидация ответа с передачей ответа из папки Resources
     @Step("Валидация ответа с передачей ожидаемого ответа из папки Resources")
@@ -234,16 +168,5 @@ public class CrudClient extends TestNGCitrusSpringSupport {
                 .get("/api/duck/getAllIds"));
     }
 
-    //Формирование строки-массива из "${duckId}" элементов
-    @Step("Формирование строки в виде массива из n-элементов")
-    public String arrayString(TestCaseRunner runner) {
-        StringBuilder arrString = new StringBuilder("[1");
-        long idDuck = getLongTestVariable(runner, "${duckId}");
-        for (long i = 2; i <= idDuck; i++) {
-            arrString.append(",").append(i);
-        }
-        arrString.append("]");
-        return arrString.toString();
-    }
 
 }
