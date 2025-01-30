@@ -51,16 +51,6 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
                 .statement("DELETE FROM duck WHERE ID=" + id));
     }
 
-    //Создание утки через API
-    @Step("POST запрос на создание уточки")
-    public void createDuckAPI(TestCaseRunner runner, Object body) {
-        runner.$(http().client(duckService)
-                .send()
-                .post("/api/duck/create")
-                .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
-    }
 
     //Генерация случайного числа, чётного (evenFlag = true) или нечётного (evenFlag = false)
     @Step("Генерация чётного/нечётного числа")
@@ -76,33 +66,6 @@ public class ActionsClient extends TestNGCitrusSpringSupport {
         return randomValue;
     }
 
-    //Создание тестовой переменной ID уточки
-    @Step("Запись ID уточки из ответа в тестовую переменную")
-    public void createTestVariableDuckId(TestCaseRunner runner) {
-        runner.$(http().client(duckService)
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .extract(fromBody().expression("$.id", "duckId")));
-    }
-
-    //Преобразование контекстной переменной в тип long
-    @Step("Преобразование контекстной переменной в тип long")
-    public long getLongTestVariable(TestCaseRunner runner, String testVariable) {
-        AtomicLong id = new AtomicLong();
-        runner.$(action -> {
-            id.set(Long.parseLong(action.getVariable(testVariable)));
-        });
-        return id.longValue();
-    }
-
-    //Инкремент контекстной переменной
-    @Step("Инкремент контекстной переменной")
-    public void setIncrementTestVariable(TestCaseRunner runner, String testVariable) {
-        runner.$(action -> {
-            action.setVariable(testVariable, getLongTestVariable(runner, testVariable) + 1);
-        });
-    }
 
     //Валидация ответа с передачей ответа String’ой
     @Step("Валидация ответа с передачей ожидаемого ответа String’ой")
