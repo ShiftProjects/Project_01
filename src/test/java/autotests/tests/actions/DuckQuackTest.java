@@ -28,7 +28,7 @@ public class DuckQuackTest extends ActionsClient {
         int repetitionCount = 3; // количество повторов серий
         int soundCount = 5; // количество кряков в серии
 
-        String quackSound = getQuackSound(repetitionCount, soundCount, sound);
+        String quackSound = getSound(repetitionCount, soundCount, sound);
         Message responseMessage = new Message()
                 .sound(quackSound);
 
@@ -56,7 +56,7 @@ public class DuckQuackTest extends ActionsClient {
         int repetitionCount = 2; // количество повторов серий
         int soundCount = 3; // количество кваков в серии
 
-        String quackSound = getQuackSound(repetitionCount, soundCount, sound);
+        String quackSound = getSound(repetitionCount, soundCount, sound);
         String responseMessage = "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}";
 
         runner.$(doFinally().actions(context ->

@@ -76,9 +76,9 @@ public class ActionsClient extends BaseTest {
 
     //Формирование звука
     @Step("Формирование звука")
-    public String getQuackSound(int repetitionCount,
-                                   int soundCount,
-                                   String sound) {
+    public String getSound(int repetitionCount,
+                           int soundCount,
+                           String sound) {
         StringBuilder quackRepetition = new StringBuilder(sound);
         for (int i = 1; i < soundCount; i++) {
             quackRepetition.append("-").append(sound);

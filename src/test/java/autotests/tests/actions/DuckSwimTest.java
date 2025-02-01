@@ -41,7 +41,7 @@ public class DuckSwimTest extends ActionsClient {
     public void duckWithoutIdSwimming(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(10, true)"); //задаём случайный ID
         String responseMessage = "{\n"
-                + "  \"message\": \"duck with id=" + "${duckId}" + " is not found\"\n" + "}";
+                + "  \"message\": \"Duck with id = " + "${duckId}" + " is not found\"\n" + "}";
         duckSwim(runner);
         validateResponseString(runner, responseMessage);
     }

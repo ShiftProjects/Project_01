@@ -71,8 +71,8 @@ public class DuckUpdateTest extends CrudClient {
         Duck testDuck = new Duck()
                 .color("black")
                 .height(2.21)
-                .sound("quack")
-                .material("woof")
+                .sound("woof")
+                .material("wood")
                 .wingsState(WingState.ACTIVE);
 
         runner.variable("duckId", "citrus:randomNumber(10, true)"); //задаём случайный ID
