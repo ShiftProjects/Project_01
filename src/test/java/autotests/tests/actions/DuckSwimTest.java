@@ -1,11 +1,10 @@
 package autotests.tests.actions;
 
 import autotests.clients.ActionsClient;
-import autotests.payloads.Duck;
-import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
@@ -13,6 +12,7 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 
 
+@Epic("Тесты на duck-action-controller")
 @Feature("Эндпоинт /api/duck/action/swim")
 public class DuckSwimTest extends ActionsClient {
 
@@ -27,7 +27,6 @@ public class DuckSwimTest extends ActionsClient {
         String wings_state = "ACTIVE";
 
         runner.variable("duckId", "citrus:randomNumber(10, true)"); //задаём случайный ID
-        String responseMessage = "actions/getDuckSwimTest/successfulSwim.json";
 
         runner.$(doFinally().actions(context ->
                 deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
@@ -35,17 +34,16 @@ public class DuckSwimTest extends ActionsClient {
         createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
 
         duckSwim(runner);
-        validateResponseResources(runner, responseMessage);
+        validateResponseResources(runner, "actions/getDuckSwimTest/successfulSwim.json");
     }
 
     @Test(description = "Проверка ответа на запрос Плыть уточке с несуществующим ID")
     @CitrusTest
     public void duckWithoutIdSwimming(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(10, true)"); //задаём случайный ID
-        String responseMessage = "{\n"
-                + "  \"message\": \"duck with id=" + "${duckId}" + " is not found\"\n" + "}";
         duckSwim(runner);
-        validateResponseString(runner, responseMessage);
+        validateResponseString(runner, "{\n"
+                + "  \"message\": \"Duck with id = " + "${duckId}" + " is not found\"\n" + "}");
     }
 
 

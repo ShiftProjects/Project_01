@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 
+@Epic("Тесты на duck-action-controller")
 @Feature("Эндпоинт /api/duck/action/properties")
 public class DuckPropertiesTest extends ActionsClient {
 

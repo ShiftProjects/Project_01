@@ -1,9 +1,7 @@
 package autotests.tests.actions;
 
 import autotests.clients.ActionsClient;
-import autotests.payloads.Duck;
 import autotests.payloads.Message;
-import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -15,6 +13,7 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 
 
+@Epic("Тесты на duck-action-controller")
 @Feature("Эндпоинт /api/duck/action/quack")
 public class DuckQuackTest extends ActionsClient {
 
@@ -31,9 +30,7 @@ public class DuckQuackTest extends ActionsClient {
         int repetitionCount = 3; // количество повторов серий
         int soundCount = 5; // количество кряков в серии
 
-        String quackSound = getQuackSound(repetitionCount, soundCount, sound);
-        Message responseMessage = new Message()
-                .sound(quackSound);
+        String quackSound = getSound(repetitionCount, soundCount, sound);
 
         runner.$(doFinally().actions(context ->
                 deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
@@ -43,7 +40,7 @@ public class DuckQuackTest extends ActionsClient {
         duckQuack(runner,
                 repetitionCount,
                 soundCount);
-        validateResponsePayload(runner, responseMessage);
+        validateResponsePayload(runner, new Message().sound(quackSound));
     }
 
     @Test(description = "Проверка того, что уточка с нечётным ID крякает")
@@ -59,8 +56,7 @@ public class DuckQuackTest extends ActionsClient {
         int repetitionCount = 2; // количество повторов серий
         int soundCount = 3; // количество кваков в серии
 
-        String quackSound = getQuackSound(repetitionCount, soundCount, sound);
-        String responseMessage = "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}";
+        String quackSound = getSound(repetitionCount, soundCount, sound);
 
         runner.$(doFinally().actions(context ->
                 deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
@@ -70,7 +66,7 @@ public class DuckQuackTest extends ActionsClient {
         duckQuack(runner,
                 repetitionCount,
                 soundCount);
-        validateResponseString(runner, responseMessage);
+        validateResponseString(runner, "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}");
     }
 
 
