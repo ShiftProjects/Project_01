@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(classes = {EndpointConfig.class})
-@Epic("Тесты на duck-action-controller")
 public class ActionsClient extends BaseTest {
 
 
@@ -23,7 +22,7 @@ public class ActionsClient extends BaseTest {
                              String color, double height,
                              String material, String sound,
                              String wings_state) {
-        sqlStatementSQL(runner, testDB, "INSERT INTO duck "
+        statementSQL(runner, testDB, "INSERT INTO duck "
                 + "(id, color, height, material, sound, wings_state)\n"
                 + "VALUES ('" + id + "', '" + color + "', '" + height + "', '"
                 + material + "', '" + sound + "', '" + wings_state + "');");
@@ -32,7 +31,7 @@ public class ActionsClient extends BaseTest {
     //Удаление утки из БД
     @Step("SQL запрос удаления уточки из БД")
     public void deleteDuckDB(TestCaseRunner runner, String id) {
-        sqlStatementSQL(runner, testDB, "DELETE FROM duck WHERE ID=" + id);
+        statementSQL(runner, testDB, "DELETE FROM duck WHERE ID=" + id);
     }
 
 
@@ -94,7 +93,7 @@ public class ActionsClient extends BaseTest {
     //Показать свойства уточки
     @Step("GET запрос на получение свойств уточки")
     public void duckProperties(TestCaseRunner runner) {
-        getSendAPI(runner, duckService, "/api/duck/action/properties?id=${duckId}");
+        sendGetRequest(runner, duckService, "/api/duck/action/properties?id=${duckId}");
     }
 
     //крякай, уточка!
@@ -102,7 +101,7 @@ public class ActionsClient extends BaseTest {
     public void duckQuack(TestCaseRunner runner,
                              int repetitionCount,
                              int soundCount) {
-        getSendAPI(runner, duckService, "/api/duck/action/quack?id=${duckId}" +
+        sendGetRequest(runner, duckService, "/api/duck/action/quack?id=${duckId}" +
                 "&repetitionCount=" + repetitionCount +
                 "&soundCount=" + soundCount);
     }
@@ -110,13 +109,13 @@ public class ActionsClient extends BaseTest {
     //плыви, уточка!
     @Step("GET запрос 'плыви'")
     public void duckSwim(TestCaseRunner runner) {
-        getSendAPI(runner, duckService, "/api/duck/action/swim?id=${duckId}");
+        sendGetRequest(runner, duckService, "/api/duck/action/swim?id=${duckId}");
     }
 
     //лети, уточка!
     @Step("GET запрос 'лети'")
     public void duckFly(TestCaseRunner runner) {
-        getSendAPI(runner, duckService, "/api/duck/action/fly?id=${duckId}");
+        sendGetRequest(runner, duckService, "/api/duck/action/fly?id=${duckId}");
     }
 
 }

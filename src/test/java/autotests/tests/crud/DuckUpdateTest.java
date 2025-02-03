@@ -7,6 +7,7 @@ import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import org.testng.annotations.Optional;
@@ -16,6 +17,7 @@ import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 
 
+@Epic("Тесты на duck-CRUD-controller")
 @Feature("Эндпоинт /api/duck/update")
 public class DuckUpdateTest extends CrudClient {
 
@@ -43,13 +45,11 @@ public class DuckUpdateTest extends CrudClient {
 
         createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
 
-        Message responseMessage = new Message()
-                .message("Duck with id = " + "${duckId}" + " is updated");
-
         duckUpdate(runner, testDuck);
 
         // проверка ответа сервера
-        validateResponsePayload(runner, responseMessage);
+        validateResponsePayload(runner, new Message()
+                .message("Duck with id = " + "${duckId}" + " is updated"));
 
         // проверка утки в БД
         validateDuckInDB(runner, "${duckId}", testDuck.color(),
@@ -82,13 +82,11 @@ public class DuckUpdateTest extends CrudClient {
 
         createDuckDB(runner, "${duckId}", color, height, material, sound, wings_state);
 
-        String responseMessage = "{\n"
-                + "  \"message\": \"Duck with id = " + "${duckId}" + " is updated\"\n" + "}";
-
         duckUpdate(runner, testDuck);
 
         // проверка ответа сервера
-        validateResponseString(runner, responseMessage);
+        validateResponseString(runner, "{\n"
+                + "  \"message\": \"Duck with id = " + "${duckId}" + " is updated\"\n" + "}");
 
         // проверка утки в БД
         validateDuckInDB(runner, "${duckId}", testDuck.color(),

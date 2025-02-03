@@ -16,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import static com.consol.citrus.actions.ExecuteSQLQueryAction.Builder.query;
 
 @ContextConfiguration(classes = {EndpointConfig.class})
-@Epic("Тесты на duck-CRUD-controller")
 public class CrudClient extends BaseTest {
 
 
@@ -26,7 +25,7 @@ public class CrudClient extends BaseTest {
                              String color, double height,
                              String material, String sound,
                              String wings_state) {
-        sqlStatementSQL(runner, testDB, "INSERT INTO duck "
+        statementSQL(runner, testDB, "INSERT INTO duck "
                 + "(id, color, height, material, sound, wings_state)\n"
                 + "VALUES ('" + id + "', '" + color + "', '" + height + "', '"
                 + material + "', '" + sound + "', '" + wings_state + "');");
@@ -35,7 +34,7 @@ public class CrudClient extends BaseTest {
     //Удаление утки из БД
     @Step("SQL запрос удаления уточки из БД")
     public void deleteDuckDB(TestCaseRunner runner, String id) {
-        sqlStatementSQL(runner, testDB, "DELETE FROM duck WHERE ID=" + id);
+        statementSQL(runner, testDB, "DELETE FROM duck WHERE ID=" + id);
     }
 
     //Проверка наличия уточки в БД
@@ -120,7 +119,7 @@ public class CrudClient extends BaseTest {
     //запрос на получение списка ID всех уточек
     @Step("GET запрос на получение ID всех уточек")
     public void getDuckAllIds(TestCaseRunner runner) {
-        getSendAPI(runner, duckService, "/api/duck/getAllIds");
+        sendGetRequest(runner, duckService, "/api/duck/getAllIds");
     }
 
 

@@ -5,6 +5,7 @@ import autotests.payloads.Message;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
@@ -12,6 +13,7 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 
 
+@Epic("Тесты на duck-action-controller")
 @Feature("Эндпоинт /api/duck/action/quack")
 public class DuckQuackTest extends ActionsClient {
 
@@ -29,8 +31,6 @@ public class DuckQuackTest extends ActionsClient {
         int soundCount = 5; // количество кряков в серии
 
         String quackSound = getSound(repetitionCount, soundCount, sound);
-        Message responseMessage = new Message()
-                .sound(quackSound);
 
         runner.$(doFinally().actions(context ->
                 deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
@@ -40,7 +40,7 @@ public class DuckQuackTest extends ActionsClient {
         duckQuack(runner,
                 repetitionCount,
                 soundCount);
-        validateResponsePayload(runner, responseMessage);
+        validateResponsePayload(runner, new Message().sound(quackSound));
     }
 
     @Test(description = "Проверка того, что уточка с нечётным ID крякает")
@@ -57,7 +57,6 @@ public class DuckQuackTest extends ActionsClient {
         int soundCount = 3; // количество кваков в серии
 
         String quackSound = getSound(repetitionCount, soundCount, sound);
-        String responseMessage = "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}";
 
         runner.$(doFinally().actions(context ->
                 deleteDuckDB(runner, "${duckId}"))); // удаление утки из БД по завершениии
@@ -67,7 +66,7 @@ public class DuckQuackTest extends ActionsClient {
         duckQuack(runner,
                 repetitionCount,
                 soundCount);
-        validateResponseString(runner, responseMessage);
+        validateResponseString(runner, "{\n" + "  \"sound\": \"" + quackSound + "\"\n" + "}");
     }
 
 

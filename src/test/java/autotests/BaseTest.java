@@ -26,7 +26,7 @@ public class BaseTest extends TestNGCitrusSpringSupport {
     protected SingleConnectionDataSource testDB;
 
     //Запрос методом sql() к БД
-    protected void sqlStatementSQL(TestCaseRunner runner, DataSource dataSource, String sql) {
+    protected void statementSQL(TestCaseRunner runner, DataSource dataSource, String sql) {
         runner.$(sql(dataSource)
                 .statement(sql));
     }
@@ -83,7 +83,7 @@ public class BaseTest extends TestNGCitrusSpringSupport {
     }
 
     //API запрос GET
-    protected void getSendAPI(TestCaseRunner runner, HttpClient httpClient, String path) {
+    protected void sendGetRequest(TestCaseRunner runner, HttpClient httpClient, String path) {
         runner.$(http().client(httpClient)
                 .send()
                 .get(path));

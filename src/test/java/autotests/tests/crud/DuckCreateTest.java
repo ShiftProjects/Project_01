@@ -7,6 +7,7 @@ import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import org.testng.annotations.DataProvider;
@@ -17,6 +18,7 @@ import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 import static io.qameta.allure.SeverityLevel.BLOCKER;
 
 
+@Epic("Тесты на duck-CRUD-controller")
 @Feature("Эндпоинт /api/duck/create")
 public class DuckCreateTest extends CrudClient {
 
