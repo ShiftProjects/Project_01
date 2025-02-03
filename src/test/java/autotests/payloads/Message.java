@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 public class Message {
     @JsonProperty("message")
     private String message;
+
     @JsonProperty("sound")
     private String sound;
 }
